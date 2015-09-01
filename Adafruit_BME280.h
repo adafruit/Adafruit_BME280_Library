@@ -1,17 +1,17 @@
 /***************************************************************************
   This is a library for the BME280 humidity, temperature & pressure sensor
 
-  Designed specifically to work with the Adafruit BME280 Breakout 
+  Designed specifically to work with the Adafruit BME280 Breakout
   ----> http://www.adafruit.com/products/2650
 
-  These sensors use I2C or SPI to communicate, 2 or 4 pins are required 
+  These sensors use I2C or SPI to communicate, 2 or 4 pins are required
   to interface.
 
   Adafruit invests time and resources providing this open source code,
   please support Adafruit andopen-source hardware by purchasing products
   from Adafruit!
 
-  Written by Limor Fried & Kevin Townsend for Adafruit Industries.  
+  Written by Limor Fried & Kevin Townsend for Adafruit Industries.
   BSD license, all text above must be included in any redistribution
  ***************************************************************************/
 #ifndef __BME280_H__
@@ -113,7 +113,7 @@ class Adafruit_BME280_Unified : public Adafruit_Sensor
 {
   public:
     Adafruit_BME280_Unified(int32_t sensorID = -1);
-  
+
     bool  begin(uint8_t addr = BME280_ADDRESS);
     void  getTemperature(float *temp);
     void  getPressure(float *pressure);
@@ -140,9 +140,7 @@ class Adafruit_BME280
     float readTemperature(void);
     float readPressure(void);
     float readHumidity(void);
-
-    //  float pressureToAltitude(float seaLevel, float atmospheric, float temp);
-    // float seaLevelForAltitude(float altitude, float atmospheric, float temp);
+    float readAltitude(float seaLevel);
 
   private:
 
