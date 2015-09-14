@@ -140,12 +140,7 @@ class Adafruit_BME280
     float readTemperature(void);
     float readPressure(void);
     float readHumidity(void);
-<<<<<<< HEAD
-
-    float readAltitude(float seaLevelhPa = 1013.25);
-=======
     float readAltitude(float seaLevel);
->>>>>>> 11ad05a034c3ef433825590ef39c8cc11cd1e50b
 
   private:
 
