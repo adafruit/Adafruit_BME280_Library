@@ -47,15 +47,7 @@ void loop() {
     Serial.println(" *C");
 
     Serial.print("Pressure = ");
-<<<<<<< HEAD
-    Serial.print(bme.readPressure());
-    Serial.println(" Pa");
 
-    Serial.print("Approx altitude = ");
-    Serial.print(bme.readAltitude(1013.25)); // this should be adjusted to your local forcase
-    Serial.println(" m");
-    
-=======
     Serial.print(bme.readPressure() / 100.0F);
     Serial.println(" hPa");
 
@@ -63,7 +55,6 @@ void loop() {
     Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
     Serial.println(" m");
 
->>>>>>> 11ad05a034c3ef433825590ef39c8cc11cd1e50b
     Serial.print("Humidity = ");
     Serial.print(bme.readHumidity());
     Serial.println(" %");
