@@ -160,6 +160,8 @@ class Adafruit_BME280
 
     int8_t _cs, _mosi, _miso, _sck;
 
+    bme280_calib_data _bme280_calib;
+
 };
 
 #endif
