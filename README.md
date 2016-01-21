@@ -37,7 +37,7 @@ Atmega2560 @ 16MHz |      X       |             |            | Use SDA/SCL on pi
 ATSAM3X8E         |      X       |             |            | Use SDA/SCL on pins 20 &amp; 21
 ATSAM21D          |      X       |             |            | 
 ATtiny85 @ 16MHz  |             |             |     X       | 
-ATtiny85 @ 8M     |             |             |     X       | 
+ATtiny85 @ 8MHz   |             |             |     X       | 
 
   * ATmega328 @ 16MHz : Arduino UNO, Adafruit Pro Trinket 5V, Adafruit Metro 328, Adafruit Metro Mini
   * ATmega328 @ 12MHz : Adafruit Pro Trinket 3V
