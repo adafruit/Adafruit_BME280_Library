@@ -256,6 +256,8 @@ float Adafruit_BME280::readTemperature(void)
 float Adafruit_BME280::readPressure(void) {
   int64_t var1, var2, p;
 
+  readTemperature(); // must be done first to get t_fine
+
   int32_t adc_P = read16(BME280_REGISTER_PRESSUREDATA);
   adc_P <<= 8;
   adc_P |= read8(BME280_REGISTER_PRESSUREDATA+2);
@@ -288,6 +290,8 @@ float Adafruit_BME280::readPressure(void) {
 */
 /**************************************************************************/
 float Adafruit_BME280::readHumidity(void) {
+
+  readTemperature(); // must be done first to get t_fine
 
   int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
 
