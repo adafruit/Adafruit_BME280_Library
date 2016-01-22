@@ -128,7 +128,7 @@ uint8_t Adafruit_BME280::read8(byte reg)
     Wire.endTransmission();
     Wire.requestFrom((uint8_t)_i2caddr, (byte)1);
     value = Wire.read();
-    Wire.endTransmission();
+
   } else {
     if (_sck == -1)
       SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
@@ -157,7 +157,7 @@ uint16_t Adafruit_BME280::read16(byte reg)
     Wire.endTransmission();
     Wire.requestFrom((uint8_t)_i2caddr, (byte)2);
     value = (Wire.read() << 8) | Wire.read();
-    Wire.endTransmission();
+
   } else {
     if (_sck == -1)
       SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
