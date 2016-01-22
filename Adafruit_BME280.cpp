@@ -63,8 +63,11 @@ bool Adafruit_BME280::begin(uint8_t a) {
     return false;
 
   readCoefficients();
-  write8(BME280_REGISTER_CONTROLHUMID, 0x03); // Set before CONTROL (DS 5.4.3)
-  write8(BME280_REGISTER_CONTROL, 0x3F);
+
+  //Set before CONTROL_meas (DS 5.4.3)
+  write8(BME280_REGISTER_CONTROLHUMID, 0x05); //16x oversampling 
+
+  write8(BME280_REGISTER_CONTROL, 0xB7); // 16x ovesampling, normal mode
   return true;
 }
 
