@@ -15,9 +15,8 @@
   BSD license, all text above must be included in any redistribution
  ***************************************************************************/
 #include "Arduino.h"
-#include <Wire.h>
 #include <SPI.h>
-#include "Adafruit_BME280.h"
+#include "BME280.h"
 
 
 /***************************************************************************
@@ -25,20 +24,20 @@
  ***************************************************************************/
 
 
-Adafruit_BME280::Adafruit_BME280()
+BME280::BME280()
   : _cs(-1), _mosi(-1), _miso(-1), _sck(-1)
 { }
 
-Adafruit_BME280::Adafruit_BME280(int8_t cspin)
+BME280::BME280(int8_t cspin)
   : _cs(cspin), _mosi(-1), _miso(-1), _sck(-1)
 { }
 
-Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)
+BME280::BME280(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)
   : _cs(cspin), _mosi(mosipin), _miso(misopin), _sck(sckpin)
 { }
 
 
-bool Adafruit_BME280::begin(uint8_t a) {
+bool BME280::begin(uint8_t a) {
   _i2caddr = a;
 
   if (_cs == -1) {
@@ -65,13 +64,13 @@ bool Adafruit_BME280::begin(uint8_t a) {
   readCoefficients();
 
   //Set before CONTROL_meas (DS 5.4.3)
-  write8(BME280_REGISTER_CONTROLHUMID, 0x05); //16x oversampling 
+  write8(BME280_REGISTER_CONTROLHUMID, 0x05); //16x oversampling
 
   write8(BME280_REGISTER_CONTROL, 0xB7); // 16x ovesampling, normal mode
   return true;
 }
 
-uint8_t Adafruit_BME280::spixfer(uint8_t x) {
+uint8_t BME280::spixfer(uint8_t x) {
   if (_sck == -1)
     return SPI.transfer(x);
 
@@ -94,7 +93,7 @@ uint8_t Adafruit_BME280::spixfer(uint8_t x) {
     @brief  Writes an 8 bit value over I2C/SPI
 */
 /**************************************************************************/
-void Adafruit_BME280::write8(byte reg, byte value)
+void BME280::write8(byte reg, byte value)
 {
   if (_cs == -1) {
     Wire.beginTransmission((uint8_t)_i2caddr);
@@ -118,7 +117,7 @@ void Adafruit_BME280::write8(byte reg, byte value)
     @brief  Reads an 8 bit value over I2C
 */
 /**************************************************************************/
-uint8_t Adafruit_BME280::read8(byte reg)
+uint8_t BME280::read8(byte reg)
 {
   uint8_t value;
 
@@ -147,7 +146,7 @@ uint8_t Adafruit_BME280::read8(byte reg)
     @brief  Reads a 16 bit value over I2C
 */
 /**************************************************************************/
-uint16_t Adafruit_BME280::read16(byte reg)
+uint16_t BME280::read16(byte reg)
 {
   uint16_t value;
 
@@ -172,7 +171,7 @@ uint16_t Adafruit_BME280::read16(byte reg)
   return value;
 }
 
-uint16_t Adafruit_BME280::read16_LE(byte reg) {
+uint16_t BME280::read16_LE(byte reg) {
   uint16_t temp = read16(reg);
   return (temp >> 8) | (temp << 8);
 
@@ -183,13 +182,13 @@ uint16_t Adafruit_BME280::read16_LE(byte reg) {
     @brief  Reads a signed 16 bit value over I2C
 */
 /**************************************************************************/
-int16_t Adafruit_BME280::readS16(byte reg)
+int16_t BME280::readS16(byte reg)
 {
   return (int16_t)read16(reg);
 
 }
 
-int16_t Adafruit_BME280::readS16_LE(byte reg)
+int16_t BME280::readS16_LE(byte reg)
 {
   return (int16_t)read16_LE(reg);
 
@@ -202,7 +201,7 @@ int16_t Adafruit_BME280::readS16_LE(byte reg)
 */
 /**************************************************************************/
 
-uint32_t Adafruit_BME280::read24(byte reg)
+uint32_t BME280::read24(byte reg)
 {
   uint32_t value;
 
@@ -211,7 +210,7 @@ uint32_t Adafruit_BME280::read24(byte reg)
     Wire.write((uint8_t)reg);
     Wire.endTransmission();
     Wire.requestFrom((uint8_t)_i2caddr, (byte)3);
-    
+
     value = Wire.read();
     value <<= 8;
     value |= Wire.read();
@@ -223,7 +222,7 @@ uint32_t Adafruit_BME280::read24(byte reg)
       SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
     spixfer(reg | 0x80); // read, bit 7 high
-    
+
     value = spixfer(0);
     value <<= 8;
     value |= spixfer(0);
@@ -244,7 +243,7 @@ uint32_t Adafruit_BME280::read24(byte reg)
     @brief  Reads the factory-set coefficients
 */
 /**************************************************************************/
-void Adafruit_BME280::readCoefficients(void)
+void BME280::readCoefficients(void)
 {
     _bme280_calib.dig_T1 = read16_LE(BME280_REGISTER_DIG_T1);
     _bme280_calib.dig_T2 = readS16_LE(BME280_REGISTER_DIG_T2);
@@ -273,7 +272,7 @@ void Adafruit_BME280::readCoefficients(void)
 
 */
 /**************************************************************************/
-float Adafruit_BME280::readTemperature(void)
+float BME280::readTemperature(void)
 {
   int32_t var1, var2;
 
@@ -298,7 +297,7 @@ float Adafruit_BME280::readTemperature(void)
 
 */
 /**************************************************************************/
-float Adafruit_BME280::readPressure(void) {
+float BME280::readPressure(void) {
   int64_t var1, var2, p;
 
   readTemperature(); // must be done first to get t_fine
@@ -332,7 +331,7 @@ float Adafruit_BME280::readPressure(void) {
 
 */
 /**************************************************************************/
-float Adafruit_BME280::readHumidity(void) {
+float BME280::readHumidity(void) {
 
   readTemperature(); // must be done first to get t_fine
 
@@ -366,7 +365,7 @@ float Adafruit_BME280::readHumidity(void) {
     @param  atmospheric   Atmospheric pressure in hPa
 */
 /**************************************************************************/
-float Adafruit_BME280::readAltitude(float seaLevel)
+float BME280::readAltitude(float seaLevel)
 {
   // Equation taken from BMP180 datasheet (page 16):
   //  http://www.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
