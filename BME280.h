@@ -17,13 +17,7 @@
 #ifndef __BME280_H__
 #define __BME280_H__
 
-#if (ARDUINO >= 100)
- #include "Arduino.h"
-#else
- #include "WProgram.h"
-#endif
-
-#include <Adafruit_Sensor.h>
+#include <Sensor.h>
 #include <Wire.h>
 
 /*=========================================================================
@@ -102,33 +96,12 @@
     } bme280_calib_data;
 /*=========================================================================*/
 
-/*
-class Adafruit_BME280_Unified : public Adafruit_Sensor
+class BME280
 {
   public:
-    Adafruit_BME280_Unified(int32_t sensorID = -1);
-
-    bool  begin(uint8_t addr = BME280_ADDRESS);
-    void  getTemperature(float *temp);
-    void  getPressure(float *pressure);
-    float pressureToAltitude(float seaLevel, float atmospheric, float temp);
-    float seaLevelForAltitude(float altitude, float atmospheric, float temp);
-    void  getEvent(sensors_event_t*);
-    void  getSensor(sensor_t*);
-
-  private:
-    uint8_t   _i2c_addr;
-    int32_t   _sensorID;
-};
-
-*/
-
-class Adafruit_BME280
-{
-  public:
-    Adafruit_BME280(void);
-    Adafruit_BME280(int8_t cspin);
-    Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
+    BME280(void);
+    BME280(int8_t cspin);
+    BME280(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
 
     bool  begin(uint8_t addr = BME280_ADDRESS);
     float readTemperature(void);
