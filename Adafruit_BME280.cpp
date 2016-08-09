@@ -103,7 +103,7 @@ void Adafruit_BME280::write8(byte reg, byte value)
     Wire.endTransmission();
   } else {
     if (_sck == -1)
-      SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
+      SPI.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
     spixfer(reg & ~0x80); // write, bit 7 low
     spixfer(value);
@@ -131,7 +131,7 @@ uint8_t Adafruit_BME280::read8(byte reg)
 
   } else {
     if (_sck == -1)
-      SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
+      SPI.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
     spixfer(reg | 0x80); // read, bit 7 high
     value = spixfer(0);
@@ -160,7 +160,7 @@ uint16_t Adafruit_BME280::read16(byte reg)
 
   } else {
     if (_sck == -1)
-      SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
+      SPI.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
     spixfer(reg | 0x80); // read, bit 7 high
     value = (spixfer(0) << 8) | spixfer(0);
@@ -220,7 +220,7 @@ uint32_t Adafruit_BME280::read24(byte reg)
 
   } else {
     if (_sck == -1)
-      SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
+      SPI.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
     spixfer(reg | 0x80); // read, bit 7 high
     
