@@ -135,6 +135,7 @@ class Adafruit_BME280
     float readPressure(void);
     float readHumidity(void);
     float readAltitude(float seaLevel);
+    float seaLevelForAltitude(float altitude, float atmospheric);
 
   private:
 
