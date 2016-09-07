@@ -246,7 +246,6 @@ uint32_t Adafruit_BME280::read24(byte reg)
 Adafruit_BME280::UncompensatedData Adafruit_BME280::readSensors(int readType)
 {
   UncompensatedData results;
-  uint32_t value;
   byte reg = BME280_REGISTER_TEMPDATA; // always start with this register
   byte length = 3;
   switch (readType) {
@@ -269,28 +268,15 @@ Adafruit_BME280::UncompensatedData Adafruit_BME280::readSensors(int readType)
     Wire.requestFrom((uint8_t)_i2caddr, length);
 
     //if (length > 0) {
-      value = Wire.read();
-      value <<= 8;
-      value |= Wire.read();
-      value <<= 8;
-      value |= Wire.read();
-      results.temp_ADC = value;
+      results.temp_ADC = read24I2C(true);
     //}
 
     //if (length > 3) {
-      value = Wire.read();
-      value <<= 8;
-      value |= Wire.read();
-      value <<= 8;
-      value |= Wire.read();
-      results.press_ADC = value;
+      results.press_ADC = read24I2C(true);
     //}
 
     if (length > 6) {
-      value = Wire.read();
-      value <<= 8;
-      value |= Wire.read();
-      results.humid_ADC = value;
+      results.humid_ADC = read24I2C(false);
     }
 
   } else {
@@ -300,28 +286,15 @@ Adafruit_BME280::UncompensatedData Adafruit_BME280::readSensors(int readType)
     spixfer(reg | 0x80); // read, bit 7 high
 
     //if (length > 0) {
-      value = spixfer(0);
-      value <<= 8;
-      value |= spixfer(0);
-      value <<= 8;
-      value |= spixfer(0);
-      results.temp_ADC = value;
+      results.temp_ADC = read24SPI(true);
     //}
 
     //if (length > 3) {
-      value = spixfer(0);
-      value <<= 8;
-      value |= spixfer(0);
-      value <<= 8;
-      value |= spixfer(0);
-      results.press_ADC = value;
+      results.press_ADC = read24SPI(true);
     //}
 
     if (length > 6) {
-      value = spixfer(0);
-      value <<= 8;
-      value |= spixfer(0);
-      results.humid_ADC = value;
+      results.humid_ADC = read24SPI(false);
     }
 
     digitalWrite(_cs, HIGH);
@@ -330,6 +303,32 @@ Adafruit_BME280::UncompensatedData Adafruit_BME280::readSensors(int readType)
   }
 
   return results;
+}
+
+uint32_t Adafruit_BME280::read24I2C(bool all_3_bytes) {
+  uint32_t value;
+
+  value = Wire.read();
+  value <<= 8;
+  value |= Wire.read();
+  if (!all_3_bytes) {
+    value <<= 8;
+    value |= Wire.read();
+  }
+  return value;
+}
+
+uint32_t Adafruit_BME280::read24SPI(bool all_3_bytes) {
+  uint32_t value;
+
+  value = spixfer(0);
+  value <<= 8;
+  value |= spixfer(0);
+  if (!all_3_bytes) {
+    value <<= 8;
+    value |= spixfer(0);
+  }
+  return value;
 }
 
 /**************************************************************************/

@@ -164,6 +164,8 @@ class Adafruit_BME280
     } UncompensatedData;
     enum { READ_T, READ_TP, READ_TPH };
     UncompensatedData readSensors(int readType);
+    uint32_t read24I2C(bool all_3_bytes);
+    uint32_t read24SPI(bool all_3_bytes);
 
     uint8_t   _i2caddr;
     int32_t   _sensorID;
