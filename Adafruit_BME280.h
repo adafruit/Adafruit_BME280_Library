@@ -162,10 +162,11 @@ class Adafruit_BME280
       uint32_t press_ADC;
       uint32_t humid_ADC;
     } UncompensatedData;
-    enum { READ_T, READ_TP, READ_TPH };
+    enum { READ_T, READ_PT, READ_TH, READ_PTH };
     UncompensatedData readSensors(int readType);
-    uint32_t read24I2C(bool all_3_bytes);
-    uint32_t read24SPI(bool all_3_bytes);
+
+    uint32_t _readIntI2C(bool read_3rd_byte);
+    uint32_t _readIntSPI(bool read_3rd_byte);
 
     uint8_t   _i2caddr;
     int32_t   _sensorID;
