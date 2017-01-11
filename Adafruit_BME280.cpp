@@ -68,6 +68,7 @@ bool Adafruit_BME280::begin(uint8_t a) {
   write8(BME280_REGISTER_CONTROLHUMID, 0x05); //16x oversampling 
 
   write8(BME280_REGISTER_CONTROL, 0xB7); // 16x ovesampling, normal mode
+  write8(BME280_REGISTER_CONFIG, 0xA0); // 1000ms sleep time, no filtering. By default, the sensor in normal mode sleeps only 0.5ms, causing the sensor to be active more and self-heating by ~0.5*C. Switching to measuring only every 1000ms eliminates the self-heating.
   return true;
 }
 
