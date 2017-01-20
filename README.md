@@ -5,7 +5,7 @@ Designed specifically to work with the Adafruit BME280 Breakout
 
 These sensors use I2C or SPI to communicate, up to 4 pins are required to interface
 
-Use of this library also required [Adafruit_Sensor](https://github.com/adafruit/Adafruit_Sensor)
+Use of this library also requires [Adafruit_Sensor](https://github.com/adafruit/Adafruit_Sensor)
 to be installed on your local system.
 
 Adafruit invests time and resources providing this open source code, 
