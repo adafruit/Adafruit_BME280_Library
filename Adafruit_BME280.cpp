@@ -65,7 +65,7 @@ bool Adafruit_BME280::begin(uint8_t a) {
   readCoefficients();
 
   //Set before CONTROL_meas (DS 5.4.3)
-  write8(BME280_REGISTER_CONTROLHUMID, 0x05); //16x oversampling 
+  write8(BME280_REGISTER_CONTROLHUMID, 0x05); //16x oversampling
 
   write8(BME280_REGISTER_CONTROL, 0xB7); // 16x ovesampling, normal mode
   return true;
@@ -211,7 +211,7 @@ uint32_t Adafruit_BME280::read24(byte reg)
     Wire.write((uint8_t)reg);
     Wire.endTransmission();
     Wire.requestFrom((uint8_t)_i2caddr, (byte)3);
-    
+
     value = Wire.read();
     value <<= 8;
     value |= Wire.read();
@@ -223,7 +223,7 @@ uint32_t Adafruit_BME280::read24(byte reg)
       SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
     spixfer(reg | 0x80); // read, bit 7 high
-    
+
     value = spixfer(0);
     value <<= 8;
     value |= spixfer(0);
@@ -238,6 +238,102 @@ uint32_t Adafruit_BME280::read24(byte reg)
   return value;
 }
 
+/**************************************************************************/
+/*!
+    @brief  Reads up to 3 24 bit values from the same sample in burst mode.
+*/
+/**************************************************************************/
+Adafruit_BME280::UncompensatedData Adafruit_BME280::readSensors(int readType)
+{
+  UncompensatedData results;
+  byte reg, length;
+  switch (readType) {
+    case READ_PTH:
+      length = 8;
+      reg = BME280_REGISTER_PRESSUREDATA;
+      break;
+    case READ_PT:
+      length = 6;
+      reg = BME280_REGISTER_PRESSUREDATA;
+      break;
+    case READ_TH:
+      length = 5;
+      reg = BME280_REGISTER_TEMPDATA;
+      break;
+    case READ_T:
+    default:
+      length = 3;
+      reg = BME280_REGISTER_TEMPDATA;
+      break;
+  }
+
+  if (_cs == -1) {
+    Wire.beginTransmission((uint8_t)_i2caddr);
+    Wire.write((uint8_t)reg);
+    Wire.endTransmission();
+    Wire.requestFrom((uint8_t)_i2caddr, length);
+
+    if (readType == READ_PTH || readType == READ_PT) {
+      results.press_ADC = _readIntI2C(true);
+    }
+
+    // always read temperature
+    results.temp_ADC = _readIntI2C(true);
+
+    if (readType == READ_PTH || readType == READ_TH) {
+      results.humid_ADC = _readIntI2C(false);
+    }
+
+  } else {
+    if (_sck == -1)
+      SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
+    digitalWrite(_cs, LOW);
+    spixfer(reg | 0x80); // read, bit 7 high
+
+    if (readType == READ_PTH || readType == READ_PT) {
+      results.press_ADC = _readIntSPI(true);
+    }
+
+    // always read temperature
+    results.temp_ADC = _readIntSPI(true);
+
+    if (readType == READ_PTH || readType == READ_TH) {
+      results.humid_ADC = _readIntSPI(false);
+    }
+
+    digitalWrite(_cs, HIGH);
+    if (_sck == -1)
+      SPI.endTransaction();              // release the SPI bus
+  }
+
+  return results;
+}
+
+uint32_t Adafruit_BME280::_readIntI2C(bool read_3rd_byte) {
+  uint32_t value;
+
+  value = Wire.read();
+  value <<= 8;
+  value |= Wire.read();
+  if (read_3rd_byte) {
+    value <<= 8;
+    value |= Wire.read();
+  }
+  return value;
+}
+
+uint32_t Adafruit_BME280::_readIntSPI(bool read_3rd_byte) {
+  uint32_t value;
+
+  value = spixfer(0);
+  value <<= 8;
+  value |= spixfer(0);
+  if (read_3rd_byte) {
+    value <<= 8;
+    value |= spixfer(0);
+  }
+  return value;
+}
 
 /**************************************************************************/
 /*!
@@ -270,14 +366,43 @@ void Adafruit_BME280::readCoefficients(void)
 
 /**************************************************************************/
 /*!
-
+    @brief  Read the sensor values, individually or as a group
 */
 /**************************************************************************/
-float Adafruit_BME280::readTemperature(void)
+float Adafruit_BME280::readTemperature(void) {
+  UncompensatedData results = readSensors(READ_T);
+  return compensateTemperature(results.temp_ADC);
+}
+
+float Adafruit_BME280::readPressure(void) {
+  UncompensatedData results = readSensors(READ_PT);
+  compensateTemperature(results.temp_ADC); // must be done first to get t_fine
+  return compensatePressure(results.press_ADC);
+}
+
+float Adafruit_BME280::readHumidity(void) {
+  UncompensatedData results = readSensors(READ_TH);
+  compensateTemperature(results.temp_ADC); // must be done first to get t_fine
+  return compensateHumidity(results.humid_ADC);
+}
+
+void Adafruit_BME280::readAll(float *pT, float *pP, float *pH) {
+  UncompensatedData results = readSensors(READ_PTH);
+  float V = compensateTemperature(results.temp_ADC); // must be done first to get t_fine
+  if (pT) *pT = V;
+  if (pP) *pP = compensatePressure(results.press_ADC);
+  if (pH) *pH = compensateHumidity(results.humid_ADC);
+}
+
+/**************************************************************************/
+/*!
+  @brief  Converts raw temperature reading using factory compensation
+*/
+/**************************************************************************/
+float Adafruit_BME280::compensateTemperature(int32_t adc_T)
 {
   int32_t var1, var2;
 
-  int32_t adc_T = read24(BME280_REGISTER_TEMPDATA);
   adc_T >>= 4;
 
   var1  = ((((adc_T>>3) - ((int32_t)_bme280_calib.dig_T1 <<1))) *
@@ -295,15 +420,12 @@ float Adafruit_BME280::readTemperature(void)
 
 /**************************************************************************/
 /*!
-
+  @brief  Converts raw pressure reading using factory compensation
 */
 /**************************************************************************/
-float Adafruit_BME280::readPressure(void) {
+float Adafruit_BME280::compensatePressure(int32_t adc_P) {
   int64_t var1, var2, p;
 
-  readTemperature(); // must be done first to get t_fine
-
-  int32_t adc_P = read24(BME280_REGISTER_PRESSUREDATA);
   adc_P >>= 4;
 
   var1 = ((int64_t)t_fine) - 128000;
@@ -329,14 +451,10 @@ float Adafruit_BME280::readPressure(void) {
 
 /**************************************************************************/
 /*!
-
+  @brief  Converts raw humidity reading using factory compensation
 */
 /**************************************************************************/
-float Adafruit_BME280::readHumidity(void) {
-
-  readTemperature(); // must be done first to get t_fine
-
-  int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
+float Adafruit_BME280::compensateHumidity(int32_t adc_H) {
 
   int32_t v_x1_u32r;
 
@@ -381,8 +499,8 @@ float Adafruit_BME280::readAltitude(float seaLevel)
 
 /**************************************************************************/
 /*!
-    Calculates the pressure at sea level (in hPa) from the specified altitude 
-    (in meters), and atmospheric pressure (in hPa).  
+    Calculates the pressure at sea level (in hPa) from the specified altitude
+    (in meters), and atmospheric pressure (in hPa).
     @param  altitude      Altitude in meters
     @param  atmospheric   Atmospheric pressure in hPa
 */
@@ -395,6 +513,6 @@ float Adafruit_BME280::seaLevelForAltitude(float altitude, float atmospheric)
   // Note that using the equation from wikipedia can give bad results
   // at high altitude.  See this thread for more information:
   //  http://forums.adafruit.com/viewtopic.php?f=22&t=58064
-  
+
   return atmospheric / pow(1.0 - (altitude/44330.0), 5.255);
 }

@@ -137,6 +137,10 @@ class Adafruit_BME280
     float readAltitude(float seaLevel);
     float seaLevelForAltitude(float altitude, float atmospheric);
 
+    // function to efficiently read all sensors at once
+    // if a particular pointer is NULL, it is ignored
+    void readAll(float *pTemperature, float *pPressure, float *pHumidity);
+
   private:
 
     void readCoefficients(void);
@@ -149,6 +153,20 @@ class Adafruit_BME280
     int16_t   readS16(byte reg);
     uint16_t  read16_LE(byte reg); // little endian
     int16_t   readS16_LE(byte reg); // little endian
+
+    float compensateTemperature(int32_t adc_T);
+    float compensatePressure(int32_t adc_P);
+    float compensateHumidity(int32_t adc_H);
+    typedef struct {
+      uint32_t temp_ADC;
+      uint32_t press_ADC;
+      uint32_t humid_ADC;
+    } UncompensatedData;
+    enum { READ_T, READ_PT, READ_TH, READ_PTH };
+    UncompensatedData readSensors(int readType);
+
+    uint32_t _readIntI2C(bool read_3rd_byte);
+    uint32_t _readIntSPI(bool read_3rd_byte);
 
     uint8_t   _i2caddr;
     int32_t   _sensorID;
