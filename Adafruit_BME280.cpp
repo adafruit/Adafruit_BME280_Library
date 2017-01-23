@@ -37,6 +37,35 @@ Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin, i
   : _cs(cspin), _mosi(mosipin), _miso(misopin), _sck(sckpin)
 { }
 
+void Adafruit_BME280::setMode(Adafruit_BME280::sensor_mode mode)
+{
+  _measReg.mode = mode;
+}
+
+void Adafruit_BME280::setTemperatureSampling(Adafruit_BME280::sensor_sampling sampling)
+{
+  _measReg.osrs_t = sampling;
+}
+
+void Adafruit_BME280::setPressureSampling(Adafruit_BME280::sensor_sampling sampling)
+{
+  _measReg.osrs_p = sampling;
+}
+
+void Adafruit_BME280::setHumiditySampling(Adafruit_BME280::sensor_sampling sampling)
+{
+  _humReg.osrs_h = sampling;
+}
+
+void Adafruit_BME280::setFilter(Adafruit_BME280::sensor_filter filter)
+{
+  _configReg.filter = filter;
+}
+
+void Adafruit_BME280::setStandbyDuration(Adafruit_BME280::standby_duration duration)
+{
+  _configReg.t_sb = duration;
+}
 
 bool Adafruit_BME280::begin(uint8_t a) {
   _i2caddr = a;
@@ -65,9 +94,9 @@ bool Adafruit_BME280::begin(uint8_t a) {
   readCoefficients();
 
   //Set before CONTROL_meas (DS 5.4.3)
-  write8(BME280_REGISTER_CONTROLHUMID, 0x05); //16x oversampling 
-
-  write8(BME280_REGISTER_CONTROL, 0xB7); // 16x ovesampling, normal mode
+  write8(BME280_REGISTER_CONTROLHUMID, _humReg.get());
+  write8(BME280_REGISTER_CONFIG, _configReg.get());
+  write8(BME280_REGISTER_CONTROL, _measReg.get());
   return true;
 }
 
