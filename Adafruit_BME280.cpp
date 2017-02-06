@@ -40,14 +40,7 @@ Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin, i
     @brief  Initialise sensor with given parameters / settings
 */
 /**************************************************************************/
-bool Adafruit_BME280::begin(uint8_t           addr,
-                            sensor_mode       mode,
-                            sensor_sampling   tempSampling,
-                            sensor_sampling   pressSampling,
-                            sensor_sampling   humSampling,
-                            sensor_filter     filter,
-                            standby_duration  duration
-                           )
+bool Adafruit_BME280::begin(uint8_t           addr)
 {
     _i2caddr = addr;
 
@@ -75,6 +68,27 @@ bool Adafruit_BME280::begin(uint8_t           addr,
 
     readCoefficients(); // read trimming parameters, see DS 4.2.2
     
+    setSampling(); // use defaults
+
+    return true;
+}
+
+/**************************************************************************/
+/*!
+    @brief  setup sensor with given parameters / settings
+    
+    This is simply a overload to the normal begin()-function, so SPI users
+    don't get confused about the library requiring an address.
+*/
+/**************************************************************************/
+
+
+void Adafruit_BME280::setSampling(sensor_mode       mode,
+		 sensor_sampling   tempSampling,
+		 sensor_sampling   pressSampling,
+		 sensor_sampling   humSampling,
+		 sensor_filter     filter,
+		 standby_duration  duration) {
     _measReg.mode     = mode;
     _measReg.osrs_t   = tempSampling;
     _measReg.osrs_p   = pressSampling;
@@ -90,28 +104,6 @@ bool Adafruit_BME280::begin(uint8_t           addr,
     write8(BME280_REGISTER_CONTROLHUMID, _humReg.get());
     write8(BME280_REGISTER_CONFIG, _configReg.get());
     write8(BME280_REGISTER_CONTROL, _measReg.get());
-
-    return true;
-}
-
-
-/**************************************************************************/
-/*!
-    @brief  Initialise sensor with given parameters / settings
-    
-    This is simply a overload to the normal begin()-function, so SPI users
-    don't get confused about the library requiring an address.
-*/
-/**************************************************************************/
-bool Adafruit_BME280::begin(sensor_mode       mode,
-                            sensor_sampling   tempSampling,
-                            sensor_sampling   pressSampling,
-                            sensor_sampling   humSampling,
-                            sensor_filter     filter,
-                            standby_duration  duration
-                           )
-{
-    return begin(BME280_ADDRESS, mode, tempSampling, pressSampling, humSampling, filter, duration);
 }
 
 

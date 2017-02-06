@@ -166,23 +166,15 @@ class Adafruit_BME280 {
         Adafruit_BME280(int8_t cspin);
         Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
         
-        bool  begin(uint8_t addr                  = BME280_ADDRESS,
-                    sensor_mode mode              = MODE_NORMAL,
-                    sensor_sampling tempSampling  = SAMPLING_X16,
-                    sensor_sampling pressSampling = SAMPLING_X16,
-                    sensor_sampling humSampling   = SAMPLING_X16,
-                    sensor_filter filter          = FILTER_OFF,
-                    standby_duration duration     = STANDBY_MS_0_5
-                   );        
-        
-        // overload function without address (-> for SPI users)
-        bool  begin(sensor_mode mode              = MODE_NORMAL,
-                    sensor_sampling tempSampling  = SAMPLING_X16,
-                    sensor_sampling pressSampling = SAMPLING_X16,
-                    sensor_sampling humSampling   = SAMPLING_X16,
-                    sensor_filter filter          = FILTER_OFF,
-                    standby_duration duration     = STANDBY_MS_0_5
-                   );
+        bool  begin(uint8_t addr                  = BME280_ADDRESS);
+
+	void setSampling(sensor_mode mode              = MODE_NORMAL,
+			 sensor_sampling tempSampling  = SAMPLING_X16,
+			 sensor_sampling pressSampling = SAMPLING_X16,
+			 sensor_sampling humSampling   = SAMPLING_X16,
+			 sensor_filter filter          = FILTER_OFF,
+			 standby_duration duration     = STANDBY_MS_0_5
+			 );
                    
         void takeForcedMeasurement();
         float readTemperature(void);
