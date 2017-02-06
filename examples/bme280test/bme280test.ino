@@ -5,7 +5,7 @@
   ----> http://www.adafruit.com/products/2650
 
   These sensors use I2C or SPI to communicate, 2 or 4 pins are required
-  to interface.
+  to interface. The device's I2C address is either 0x76 or 0x77.
 
   Adafruit invests time and resources providing this open source code,
   please support Adafruit andopen-source hardware by purchasing products
@@ -29,19 +29,37 @@
 
 Adafruit_BME280 bme; // I2C
 //Adafruit_BME280 bme(BME_CS); // hardware SPI
-//Adafruit_BME280 bme(BME_CS, BME_MOSI, BME_MISO,  BME_SCK);
+//Adafruit_BME280 bme(BME_CS, BME_MOSI, BME_MISO, BME_SCK); // software SPI
+
+unsigned long delayTime;
 
 void setup() {
-  Serial.begin(9600);
-  Serial.println(F("BME280 test"));
+    Serial.begin(9600);
+    Serial.println(F("BME280 test"));
 
-  if (!bme.begin()) {
-    Serial.println("Could not find a valid BME280 sensor, check wiring!");
-    while (1);
-  }
+    bool status;
+    
+    // default settings
+    status = bme.begin();
+    if (!status) {
+        Serial.println("Could not find a valid BME280 sensor, check wiring!");
+        while (1);
+    }
+    
+    Serial.println("-- Default Test --");
+    delayTime = 1000;
+
+    Serial.println();
 }
 
-void loop() {
+
+void loop() { 
+    printValues();
+    delay(delayTime);
+}
+
+
+void printValues() {
     Serial.print("Temperature = ");
     Serial.print(bme.readTemperature());
     Serial.println(" *C");
@@ -60,5 +78,4 @@ void loop() {
     Serial.println(" %");
 
     Serial.println();
-    delay(2000);
 }
