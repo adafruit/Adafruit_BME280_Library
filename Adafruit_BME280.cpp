@@ -303,7 +303,8 @@ void Adafruit_BME280::takeForcedMeasurement()
         write8(BME280_REGISTER_CONTROL, _measReg.get());
         // wait until measurement has been completed, otherwise we would read
         // the values from the last measurement
-        while (read8(BME280_REGISTER_STATUS) & 0x08);
+        while (read8(BME280_REGISTER_STATUS) & 0x08)
+		delay(1);
     }
 }
 
