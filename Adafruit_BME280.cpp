@@ -77,7 +77,7 @@ bool Adafruit_BME280::begin(uint8_t           addr)
     while (isReadingCalibration())
           delay(100);
 
-    readCoefficients();
+    readCoefficients(); // read trimming parameters, see DS 4.2.2
 
     setSampling(); // use defaults
 
