@@ -187,6 +187,7 @@ class Adafruit_BME280 {
         
     private:
         void readCoefficients(void);
+        bool isReadingCalibration(void);
         uint8_t spixfer(uint8_t x);
 
         void      write8(byte reg, byte value);

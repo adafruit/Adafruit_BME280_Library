@@ -66,8 +66,19 @@ bool Adafruit_BME280::begin(uint8_t           addr)
     if (read8(BME280_REGISTER_CHIPID) != 0x60)
         return false;
 
+    // reset the device using soft-reset
+    // this makes sure the IIR is off, etc.
+    write8(BME280_REGISTER_SOFTRESET, 0xB6);
+
+    // wait for chip to wake up.
+    delay(300);
+
+    // if chip is still reading calibration, delay
+    while (isReadingCalibration())
+          delay(100);
+
     readCoefficients(); // read trimming parameters, see DS 4.2.2
-    
+
     setSampling(); // use defaults
 
     return true;
@@ -336,6 +347,18 @@ void Adafruit_BME280::readCoefficients(void)
     _bme280_calib.dig_H4 = (read8(BME280_REGISTER_DIG_H4) << 4) | (read8(BME280_REGISTER_DIG_H4+1) & 0xF);
     _bme280_calib.dig_H5 = (read8(BME280_REGISTER_DIG_H5+1) << 4) | (read8(BME280_REGISTER_DIG_H5) >> 4);
     _bme280_calib.dig_H6 = (int8_t)read8(BME280_REGISTER_DIG_H6);
+}
+
+/**************************************************************************/
+/*!
+    @brief return true if chip is busy reading cal data
+*/
+/**************************************************************************/
+bool Adafruit_BME280::isReadingCalibration(void)
+{
+  uint8_t const rStatus = read8(BME280_REGISTER_STATUS);
+
+  return (rStatus & (1 << 0)) != 0;
 }
 
 
