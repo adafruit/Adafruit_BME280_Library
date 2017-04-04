@@ -12,6 +12,7 @@
   from Adafruit!
 
   Written by Limor Fried & Kevin Townsend for Adafruit Industries.
+  Updated by Pedro Ribeiro (pamribeirox@gmail.com) for BMP280 compatibility
   BSD license, all text above must be included in any redistribution
  ***************************************************************************/
 #include "Arduino.h"
@@ -40,9 +41,9 @@ Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin, i
     @brief  Initialise sensor with given parameters / settings
 */
 /**************************************************************************/
-bool Adafruit_BME280::begin(uint8_t           addr)
+bool Adafruit_BME280::begin(uint8_t addr)
 {
-    _i2caddr = addr;
+	_i2caddr = addr;
 
     // init I2C or SPI sensor interface
     if (_cs == -1) {
@@ -62,9 +63,30 @@ bool Adafruit_BME280::begin(uint8_t           addr)
         }
     }
 
+	if(!addr) { // Address autoselect plug & play
+		Wire.beginTransmission(BME280_ADDRESS_SDO_HIGH); // Try if 0x77 is alive
+		if(Wire.endTransmission() == 0) 
+			_i2caddr = BME280_ADDRESS_SDO_HIGH;
+		else {
+			Wire.beginTransmission(BME280_ADDRESS_SDO_LOW); // Try if 0x76 is alive
+			if(Wire.endTransmission() == 0)
+				_i2caddr = BME280_ADDRESS_SDO_LOW;
+			else
+				return false; // No device answers at known addresses for BMP280 & BME280
+		}
+	}
+
     // check if sensor, i.e. the chip ID is correct
-    if (read8(BME280_REGISTER_CHIPID) != 0x60)
-        return false;
+	_chipID = read8(BME280_REGISTER_CHIPID);
+	switch(_chipID) {
+		case BME280_ID:
+		case BMP280_ID:
+		case BMP280_SAMPLE57_ID:
+		case BMP280_SAMPLE56_ID:
+			break;
+		default:
+			return false;
+	}
 
     // reset the device using soft-reset
     // this makes sure the IIR is off, etc.
@@ -112,7 +134,8 @@ void Adafruit_BME280::setSampling(sensor_mode       mode,
     
     // you must make sure to also set REGISTER_CONTROL after setting the
     // CONTROLHUMID register, otherwise the values won't be applied (see DS 5.4.3)
-    write8(BME280_REGISTER_CONTROLHUMID, _humReg.get());
+    if(_chipID == BME280_ID)
+		write8(BME280_REGISTER_CONTROLHUMID, _humReg.get());
     write8(BME280_REGISTER_CONFIG, _configReg.get());
     write8(BME280_REGISTER_CONTROL, _measReg.get());
 }
@@ -341,12 +364,14 @@ void Adafruit_BME280::readCoefficients(void)
     _bme280_calib.dig_P8 = readS16_LE(BME280_REGISTER_DIG_P8);
     _bme280_calib.dig_P9 = readS16_LE(BME280_REGISTER_DIG_P9);
 
-    _bme280_calib.dig_H1 = read8(BME280_REGISTER_DIG_H1);
-    _bme280_calib.dig_H2 = readS16_LE(BME280_REGISTER_DIG_H2);
-    _bme280_calib.dig_H3 = read8(BME280_REGISTER_DIG_H3);
-    _bme280_calib.dig_H4 = (read8(BME280_REGISTER_DIG_H4) << 4) | (read8(BME280_REGISTER_DIG_H4+1) & 0xF);
-    _bme280_calib.dig_H5 = (read8(BME280_REGISTER_DIG_H5+1) << 4) | (read8(BME280_REGISTER_DIG_H5) >> 4);
-    _bme280_calib.dig_H6 = (int8_t)read8(BME280_REGISTER_DIG_H6);
+    if(_chipID == BME280_ID) {
+		_bme280_calib.dig_H1 = read8(BME280_REGISTER_DIG_H1);
+		_bme280_calib.dig_H2 = readS16_LE(BME280_REGISTER_DIG_H2);
+		_bme280_calib.dig_H3 = read8(BME280_REGISTER_DIG_H3);
+		_bme280_calib.dig_H4 = (read8(BME280_REGISTER_DIG_H4) << 4) | (read8(BME280_REGISTER_DIG_H4+1) & 0xF);
+		_bme280_calib.dig_H5 = (read8(BME280_REGISTER_DIG_H5+1) << 4) | (read8(BME280_REGISTER_DIG_H5) >> 4);
+		_bme280_calib.dig_H6 = (int8_t)read8(BME280_REGISTER_DIG_H6);
+	}
 }
 
 /**************************************************************************/
@@ -432,6 +457,9 @@ float Adafruit_BME280::readPressure(void) {
 */
 /**************************************************************************/
 float Adafruit_BME280::readHumidity(void) {
+    if(_chipID != BME280_ID) {
+		return NAN; // Sensor without humidity support
+	}
     readTemperature(); // must be done first to get t_fine
 
     int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
@@ -500,3 +528,21 @@ float Adafruit_BME280::seaLevelForAltitude(float altitude, float atmospheric)
 
     return atmospheric / pow(1.0 - (altitude/44330.0), 5.255);
 }
+
+#ifndef BME280_NOINFO
+const char* Adafruit_BME280::chipInfo()
+{
+	switch(_chipID) {
+		case BME280_ID:
+			return "BME280";
+		case BMP280_ID:
+			return "BMP280";
+		case BMP280_SAMPLE57_ID:
+			return "BMP280 SAMPLES 0x57";
+		case BMP280_SAMPLE56_ID:
+			return "BMP280 SAMPLES 0x56";
+	}
+	return "UNKNOWN see sensorID()";
+}
+#endif // BME280_NOINFO
+
