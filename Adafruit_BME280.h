@@ -166,7 +166,10 @@ class Adafruit_BME280 {
         Adafruit_BME280(int8_t cspin);
         Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
         
-        bool  begin(uint8_t addr                  = BME280_ADDRESS);
+		bool begin(TwoWire *theWire);
+		bool begin(uint8_t addr = BME280_ADDRESS);
+        bool begin(uint8_t addr = BME280_ADDRESS, TwoWire *theWire = &Wire);
+		bool init();
 
 	void setSampling(sensor_mode mode              = MODE_NORMAL,
 			 sensor_sampling tempSampling  = SAMPLING_X16,
@@ -186,6 +189,7 @@ class Adafruit_BME280 {
 
         
     private:
+		TwoWire *_wire;
         void readCoefficients(void);
         bool isReadingCalibration(void);
         uint8_t spixfer(uint8_t x);
