@@ -165,10 +165,11 @@ class Adafruit_BME280 {
         Adafruit_BME280(void);
         Adafruit_BME280(int8_t cspin);
         Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
-        
+		
+		bool begin(void);
 		bool begin(TwoWire *theWire);
-		bool begin(uint8_t addr = BME280_ADDRESS);
-        bool begin(uint8_t addr = BME280_ADDRESS, TwoWire *theWire = &Wire);
+		bool begin(uint8_t addr);
+        bool begin(uint8_t addr, TwoWire *theWire);
 		bool init();
 
 	void setSampling(sensor_mode mode              = MODE_NORMAL,

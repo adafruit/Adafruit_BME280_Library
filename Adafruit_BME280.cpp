@@ -61,6 +61,13 @@ bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire)
 	return init();
 }
 
+bool Adafruit_BME280::begin(void)
+{
+    _i2caddr = BME280_ADDRESS;
+	_wire = &Wire;
+	return init();
+}
+
 bool Adafruit_BME280::init()
 {
     // init I2C or SPI sensor interface
