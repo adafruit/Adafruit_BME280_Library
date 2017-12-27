@@ -51,8 +51,6 @@ void setup() {
     delayTime = 1000;
 
     Serial.println();
-
-    delay(100); // let sensor boot up
 }
 
 

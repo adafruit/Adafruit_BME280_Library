@@ -107,6 +107,8 @@ bool Adafruit_BME280::init()
 
     setSampling(); // use defaults
 
+    delay(100);
+
     return true;
 }
 
