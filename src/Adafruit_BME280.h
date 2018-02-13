@@ -180,7 +180,7 @@ class Adafruit_BME280 {
 			 standby_duration duration     = STANDBY_MS_0_5
 			 );
 
-        void takeForcedMeasurement();
+        void takeForcedMeasurement(bool wait_for_completion = true);
         float readTemperature(void);
         float readPressure(void);
         float readHumidity(void);

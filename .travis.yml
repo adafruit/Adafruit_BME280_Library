@@ -26,6 +26,8 @@ install:
     - pip install -U platformio
     - pio upgrade
     - pio update
+    - pio lib -g install 31  # Adafruit Unified Sensor
+    - pio lib -g update
 
 script:
 # Build AVR Boards
