@@ -115,7 +115,7 @@ bool Adafruit_BME280::init()
 /**************************************************************************/
 /*!
     @brief  setup sensor with given parameters / settings
-    
+
     This is simply a overload to the normal begin()-function, so SPI users
     don't get confused about the library requiring an address.
 */
@@ -131,13 +131,13 @@ void Adafruit_BME280::setSampling(sensor_mode       mode,
     _measReg.mode     = mode;
     _measReg.osrs_t   = tempSampling;
     _measReg.osrs_p   = pressSampling;
-        
-    
+
+
     _humReg.osrs_h    = humSampling;
     _configReg.filter = filter;
     _configReg.t_sb   = duration;
 
-    
+
     // you must make sure to also set REGISTER_CONTROL after setting the
     // CONTROLHUMID register, otherwise the values won't be applied (see DS 5.4.3)
     write8(BME280_REGISTER_CONTROLHUMID, _humReg.get());
@@ -201,7 +201,7 @@ void Adafruit_BME280::write8(byte reg, byte value) {
 /**************************************************************************/
 uint8_t Adafruit_BME280::read8(byte reg) {
     uint8_t value;
-    
+
     if (_cs == -1) {
         _wire -> beginTransmission((uint8_t)_i2caddr);
         _wire -> write((uint8_t)reg);
@@ -254,7 +254,7 @@ uint16_t Adafruit_BME280::read16(byte reg)
 
 /**************************************************************************/
 /*!
-    
+
 */
 /**************************************************************************/
 uint16_t Adafruit_BME280::read16_LE(byte reg) {
@@ -276,7 +276,7 @@ int16_t Adafruit_BME280::readS16(byte reg)
 
 /**************************************************************************/
 /*!
-   
+
 */
 /**************************************************************************/
 int16_t Adafruit_BME280::readS16_LE(byte reg)
@@ -331,8 +331,8 @@ uint32_t Adafruit_BME280::read24(byte reg)
     @brief  Take a new measurement (only possible in forced mode)
 */
 /**************************************************************************/
-void Adafruit_BME280::takeForcedMeasurement()
-{   
+void Adafruit_BME280::takeForcedMeasurement(bool wait_for_completion)
+{
     // If we are in forced mode, the BME sensor goes back to sleep after each
     // measurement and we need to set it to forced mode once at this point, so
     // it will take the next measurement and then return to sleep again.
@@ -342,8 +342,11 @@ void Adafruit_BME280::takeForcedMeasurement()
         write8(BME280_REGISTER_CONTROL, _measReg.get());
         // wait until measurement has been completed, otherwise we would read
         // the values from the last measurement
-        while (read8(BME280_REGISTER_STATUS) & 0x08)
-		delay(1);
+        if (wait_for_completion)
+        {
+            while (read8(BME280_REGISTER_STATUS) & 0x08)
+            delay(1);
+        }
     }
 }
 
@@ -406,7 +409,7 @@ float Adafruit_BME280::readTemperature(void)
 
     var1 = ((((adc_T>>3) - ((int32_t)_bme280_calib.dig_T1 <<1))) *
             ((int32_t)_bme280_calib.dig_T2)) >> 11;
-             
+
     var2 = (((((adc_T>>4) - ((int32_t)_bme280_calib.dig_T1)) *
               ((adc_T>>4) - ((int32_t)_bme280_calib.dig_T1))) >> 12) *
             ((int32_t)_bme280_calib.dig_T3)) >> 14;
@@ -465,7 +468,7 @@ float Adafruit_BME280::readHumidity(void) {
     int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
     if (adc_H == 0x8000) // value in case humidity measurement was disabled
         return NAN;
-        
+
     int32_t v_x1_u32r;
 
     v_x1_u32r = (t_fine - ((int32_t)76800));
@@ -511,8 +514,8 @@ float Adafruit_BME280::readAltitude(float seaLevel)
 
 /**************************************************************************/
 /*!
-    Calculates the pressure at sea level (in hPa) from the specified altitude 
-    (in meters), and atmospheric pressure (in hPa).  
+    Calculates the pressure at sea level (in hPa) from the specified altitude
+    (in meters), and atmospheric pressure (in hPa).
     @param  altitude      Altitude in meters
     @param  atmospheric   Atmospheric pressure in hPa
 */
