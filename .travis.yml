@@ -30,11 +30,5 @@ install:
     - pio lib -g update
 
 script:
-# Build AVR Boards
-- platformio ci --lib="." --board=uno --board=feather32u4 --board=megaatmega2560 --board=mayfly --board=gemma --board=metro
-
-# Build SAMD Boards
-- platformio ci --lib="." --board=adafruit_feather_m0
-
-# Build ESP Boards
-- platformio ci --lib="." --board=huzzah --board=featheresp32
+# Build Boards
+- platformio ci --lib="." --board=uno --board=feather32u4 --board=megaatmega2560 --board=mayfly --board=metro --board=adafruit_feather_m0 --board=huzzah --board=featheresp32
