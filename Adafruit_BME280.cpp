@@ -526,5 +526,20 @@ float Adafruit_BME280::seaLevelForAltitude(float altitude, float atmospheric)
     // at high altitude. See this thread for more information:
     //  http://forums.adafruit.com/viewtopic.php?f=22&t=58064
 
-    return atmospheric / pow(1.0 - (altitude/44330.0), 5.255);
+  return atmospheric / pow(1.0 - (altitude/44330.0), 5.255);
+}
+
+uint8_t Adafruit_BME280::readManufacturerId() {
+  return read8(0xd0);
+}
+
+uint8_t Adafruit_BME280::reset() {
+  getLastError(); // reset error if any
+  write8(0xe0, 0xb6);
+  return getLastError();
+}
+
+uint8_t Adafruit_BME280::getLastError() {
+
+  return 0;
 }
