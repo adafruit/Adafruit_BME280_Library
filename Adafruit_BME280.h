@@ -187,6 +187,9 @@ class Adafruit_BME280 {
         float readAltitude(float seaLevel);
         float seaLevelForAltitude(float altitude, float pressure);
 
+        uint8_t readManufacturerId();
+        uint8_t reset();
+        uint8_t getLastError();
         
     private:
 		TwoWire *_wire;
