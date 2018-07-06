@@ -192,6 +192,7 @@ class Adafruit_BME280 {
         uint8_t getLastError();
         
     private:
+        uint8_t _lastError = 0;
 		TwoWire *_wire;
         void readCoefficients(void);
         bool isReadingCalibration(void);
