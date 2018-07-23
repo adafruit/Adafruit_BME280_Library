@@ -571,6 +571,7 @@ uint8_t Adafruit_BME280::reset() {
 }
 
 uint8_t Adafruit_BME280::getLastError() {
-
-  return _lastError = 0;
+  uint8_t res = _lastError;
+  _lastError = 0;
+  return res;
 }
