@@ -89,13 +89,22 @@ bool Adafruit_BME280::init()
         }
     }
 
+    // clear error
+    getLastError();
+
     // check if sensor, i.e. the chip ID is correct
     if (readManufacturerId() != 0x60)
         return false;
 
+    if (getLastError())
+      return false;
+
     // reset the device using soft-reset
     // this makes sure the IIR is off, etc.
     reset();
+
+    if (getLastError())
+      return false;
 
     // wait for chip to wake up.
     delay(300);
@@ -106,7 +115,13 @@ bool Adafruit_BME280::init()
 
     readCoefficients(); // read trimming parameters, see DS 4.2.2
 
+    if (getLastError())
+      return false;
+
     setSampling(); // use defaults
+
+    if (getLastError())
+      return false;
 
     delay(100);
 
@@ -326,15 +341,19 @@ uint32_t Adafruit_BME280::read24(byte reg)
           return 0;
         }
         _wire -> requestFrom((uint8_t)_i2caddr, (byte)3);
-        if (res != 3) {
-          _lastError = 100;
-          return 0;
-        }
+//        if (res != 3) {  // it looks that current version of arduino lib returns wrong length for length 3 or more.
+//          _lastError = 100;
+//          return 0;
+//        }
 
         value = _wire -> read();
         value <<= 8;
         value |= _wire -> read();
         value <<= 8;
+        if (!Wire.available()) { // check data available here....
+          _lastError = 200;
+          return 0;
+        }
         value |= _wire -> read();
     } else {
         if (_sck == -1)
