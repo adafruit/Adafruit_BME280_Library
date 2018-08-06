@@ -420,7 +420,7 @@ float Adafruit_BME280::readTemperature(void)
 
 /**************************************************************************/
 /*!
-    @brief  Returns the temperature from the sensor
+    @brief  Returns the pressure from the sensor
 */
 /**************************************************************************/
 float Adafruit_BME280::readPressure(void) {
@@ -506,6 +506,30 @@ float Adafruit_BME280::readAltitude(float seaLevel)
 
     float atmospheric = readPressure() / 100.0F;
     return 44330.0 * (1.0 - pow(atmospheric / seaLevel, 0.1903));
+}
+
+/**************************************************************************/
+/*!  Driver55
+    Calculates the altitude (in meters) from the specified atmospheric
+    pressure (in hPa), and sea-level pressure (in hPa)
+	with Temperature Compensation.
+	(see https://keisan.casio.com/exec/system/1224585971)
+	NOTE:
+	If the altitude is more than 11km high above sea level, 
+	the hypsometric formula cannot be applied because the temperature 
+	lapse rate varies considerably with altitude.
+
+    @param  seaLevel      Sea-level pressure in hPa
+    @param  atmospheric   Atmospheric pressure in hPa
+	@param  temperature   temperature in Celsius
+*/
+/**************************************************************************/
+float Adafruit_BME280::readAltitudeTC(float seaLevel, float atmospheric, float temperature)
+{
+    // Equation taken from https://keisan.casio.com/exec/system/1224585971
+    
+    return ( (pow(seaLevel / atmospheric, 0.1902225) - 1.0) * (temperature + 273.15) ) / 0.0065;
+    
 }
 
 
