@@ -501,8 +501,8 @@ float Adafruit_BME280::readTemperature(void)
 
 /**************************************************************************/
 /*!
-    @brief  Returns the temperature from the sensor
-    @returns the pressure value read from the device
+    @brief  Returns the pressure from the sensor
+    @returns the pressure value (in Pascal) read from the device
 */
 /**************************************************************************/
 float Adafruit_BME280::readPressure(void) {
