@@ -268,7 +268,7 @@ class Adafruit_BME280 {
             unsigned int spi3w_en : 1;
 
             unsigned int get() {
-                return (t_sb << 5) | (filter << 3) | spi3w_en;
+                return (t_sb << 5) | (filter << 2) | spi3w_en;
             }
         };
         config _configReg;
@@ -301,7 +301,7 @@ class Adafruit_BME280 {
             unsigned int mode : 2;
 
             unsigned int get() {
-                return (osrs_t << 5) | (osrs_p << 3) | mode;
+                return (osrs_t << 5) | (osrs_p << 2) | mode;
             }
         };
         ctrl_meas _measReg;
