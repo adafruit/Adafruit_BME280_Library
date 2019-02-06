@@ -11,7 +11,7 @@
  * to interface.
  *
  * Designed specifically to work with the Adafruit BME280 Breakout
- * ----> http://www.adafruit.com/products/2650
+ * ----> http://www.adafruit.com/products/2652
  *    
  *  Adafruit invests time and resources providing this open source code, 
  *  please support Adafruit and open-source hardware by purchasing 
