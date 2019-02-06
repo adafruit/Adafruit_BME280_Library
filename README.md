@@ -1,6 +1,6 @@
 # Adafruit BME280 Library [![Build Status](https://travis-ci.org/adafruit/Adafruit_BME280_Library.svg?branch=master)](https://travis-ci.org/adafruit/Adafruit_BME280_Library)
 
-<a href="http://www.adafruit.com/products/2652"><img src="https://cdn-shop.adafruit.com/970x728/2652-00.jpg" width="500"/></a>
+<a href="http://www.adafruit.com/products/2652"><img src="./assets/board.jpg" width="500"/></a>
 
 This is a library for the Adafruit BME280 Humidity, Barometric Pressure + Temp sensor
 
