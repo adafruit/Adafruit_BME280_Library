@@ -26,7 +26,6 @@
  #include "WProgram.h"
 #endif
 
-#include <Adafruit_Sensor.h>
 #include <Wire.h>
 
 /**************************************************************************/
@@ -219,8 +218,12 @@ class Adafruit_BME280 {
         float readAltitude(float seaLevel);
         float seaLevelForAltitude(float altitude, float pressure);
 
+        uint8_t readManufacturerId();
+        uint8_t reset();
+        uint8_t getLastError();
         
     private:
+        uint8_t _lastError = 0;
 		TwoWire *_wire;
         void readCoefficients(void);
         bool isReadingCalibration(void);
