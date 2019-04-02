@@ -220,7 +220,7 @@ class Adafruit_BME280 {
         float seaLevelForAltitude(float altitude, float pressure);
 
         
-    protected:
+    private:
 		TwoWire *_wire;
         void readCoefficients(void);
         bool isReadingCalibration(void);
