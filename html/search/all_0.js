@@ -1,7 +1,14 @@
 var searchData=
 [
-  ['adafruit_5fbme280',['Adafruit_BME280',['../class_adafruit___b_m_e280.html',1,'Adafruit_BME280'],['../class_adafruit___b_m_e280.html#a67b78a7dd732fab0b34372235945824f',1,'Adafruit_BME280::Adafruit_BME280(void)'],['../class_adafruit___b_m_e280.html#aeafbace9aef944d2e82745cf1ec5a85f',1,'Adafruit_BME280::Adafruit_BME280(int8_t cspin)'],['../class_adafruit___b_m_e280.html#a60037360f9b92a42fef0959f493a9407',1,'Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)']]],
-  ['adafruit_5fbme280_2ecpp',['Adafruit_BME280.cpp',['../_adafruit___b_m_e280_8cpp.html',1,'']]],
-  ['adafruit_5fbme280_2eh',['Adafruit_BME280.h',['../_adafruit___b_m_e280_8h.html',1,'']]],
-  ['adafruit_20bme280_20humidity_2c_20temperature_20_26_20pressure_20sensor',['Adafruit BME280 humidity, temperature &amp; pressure sensor',['../index.html',1,'']]]
+  ['_5fbme280_5fcalib',['_bme280_calib',['../class_adafruit___b_m_e280.html#a459dad3bcef4e82568377e00c05c3d30',1,'Adafruit_BME280']]],
+  ['_5fconfigreg',['_configReg',['../class_adafruit___b_m_e280.html#a039c1569d4ce4b6f4574da513ec5260d',1,'Adafruit_BME280']]],
+  ['_5fcs',['_cs',['../class_adafruit___b_m_e280.html#abdd222f075d4e7578cd62daae2e8003a',1,'Adafruit_BME280']]],
+  ['_5fhumreg',['_humReg',['../class_adafruit___b_m_e280.html#a503a04dcf58f42c8fe7eee5d83eca975',1,'Adafruit_BME280']]],
+  ['_5fi2caddr',['_i2caddr',['../class_adafruit___b_m_e280.html#acfe9fed7eafe505fce7a4b0fba584fba',1,'Adafruit_BME280']]],
+  ['_5fmeasreg',['_measReg',['../class_adafruit___b_m_e280.html#ac8764be31eea714031b00106be727a79',1,'Adafruit_BME280']]],
+  ['_5fmiso',['_miso',['../class_adafruit___b_m_e280.html#ab0c4c6ba40923bb3465cd1572e9fbdab',1,'Adafruit_BME280']]],
+  ['_5fmosi',['_mosi',['../class_adafruit___b_m_e280.html#a7b0c106ffefc7f50608da1862efc6fac',1,'Adafruit_BME280']]],
+  ['_5fsck',['_sck',['../class_adafruit___b_m_e280.html#ae676c0bd7f7d9acf6850df97ab88e8bb',1,'Adafruit_BME280']]],
+  ['_5fsensorid',['_sensorID',['../class_adafruit___b_m_e280.html#a5c0070673a876a971ef7315a5778dcd8',1,'Adafruit_BME280']]],
+  ['_5fwire',['_wire',['../class_adafruit___b_m_e280.html#a7178ac54add918b92e4d806e4f710e74',1,'Adafruit_BME280']]]
 ];

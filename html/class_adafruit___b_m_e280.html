@@ -62,6 +62,8 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_adafruit___b_m_e280-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Adafruit_BME280 Class Reference</div>  </div>
@@ -73,6 +75,18 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="_adafruit___b_m_e280_8h_source.html">Adafruit_BME280.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_adafruit___b_m_e280_1_1config.html">config</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">config register  <a href="struct_adafruit___b_m_e280_1_1config.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_adafruit___b_m_e280_1_1ctrl__hum.html">ctrl_hum</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="struct_adafruit___b_m_e280_1_1ctrl__hum.html" title="ctrl_hum register ">ctrl_hum</a> register  <a href="struct_adafruit___b_m_e280_1_1ctrl__hum.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_adafruit___b_m_e280_1_1ctrl__meas.html">ctrl_meas</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="struct_adafruit___b_m_e280_1_1ctrl__meas.html" title="ctrl_meas register ">ctrl_meas</a> register  <a href="struct_adafruit___b_m_e280_1_1ctrl__meas.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a01725932e3b27fc4cf6118d2d0c60051"><td class="memItemLeft" align="right" valign="top"><a id="a01725932e3b27fc4cf6118d2d0c60051"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a01725932e3b27fc4cf6118d2d0c60051">sensor_sampling</a> { <br />
@@ -166,6 +180,91 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a94edcc3ed286be7be94d80c664c97f6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a156a41831423e012d9dab0927b089260"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a156a41831423e012d9dab0927b089260">seaLevelForAltitude</a> (float altitude, float pressure)</td></tr>
 <tr class="separator:a156a41831423e012d9dab0927b089260"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a69a7e33e338f8d40f9433a019e91f122"><td class="memItemLeft" align="right" valign="top"><a id="a69a7e33e338f8d40f9433a019e91f122"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a69a7e33e338f8d40f9433a019e91f122">readCoefficients</a> (void)</td></tr>
+<tr class="memdesc:a69a7e33e338f8d40f9433a019e91f122"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the factory-set coefficients. <br /></td></tr>
+<tr class="separator:a69a7e33e338f8d40f9433a019e91f122"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2dc2bb5d3909f9941638cc65e5c3cfd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#aa2dc2bb5d3909f9941638cc65e5c3cfd">isReadingCalibration</a> (void)</td></tr>
+<tr class="memdesc:aa2dc2bb5d3909f9941638cc65e5c3cfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">return true if chip is busy reading cal data  <a href="#aa2dc2bb5d3909f9941638cc65e5c3cfd">More...</a><br /></td></tr>
+<tr class="separator:aa2dc2bb5d3909f9941638cc65e5c3cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a075b717c0c4011d25729f5bf69d44803"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a075b717c0c4011d25729f5bf69d44803">spixfer</a> (uint8_t x)</td></tr>
+<tr class="memdesc:a075b717c0c4011d25729f5bf69d44803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encapsulate hardware and software SPI transfer into one function.  <a href="#a075b717c0c4011d25729f5bf69d44803">More...</a><br /></td></tr>
+<tr class="separator:a075b717c0c4011d25729f5bf69d44803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a037ec3befbf70abd25d11f1822373d36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a037ec3befbf70abd25d11f1822373d36">write8</a> (byte reg, byte value)</td></tr>
+<tr class="memdesc:a037ec3befbf70abd25d11f1822373d36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes an 8 bit value over I2C or SPI.  <a href="#a037ec3befbf70abd25d11f1822373d36">More...</a><br /></td></tr>
+<tr class="separator:a037ec3befbf70abd25d11f1822373d36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52c2dcf7854222e5801ee4bb84e67d47"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a52c2dcf7854222e5801ee4bb84e67d47">read8</a> (byte reg)</td></tr>
+<tr class="memdesc:a52c2dcf7854222e5801ee4bb84e67d47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads an 8 bit value over I2C or SPI.  <a href="#a52c2dcf7854222e5801ee4bb84e67d47">More...</a><br /></td></tr>
+<tr class="separator:a52c2dcf7854222e5801ee4bb84e67d47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9165508b9a500da269264eb3cff723a5"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a9165508b9a500da269264eb3cff723a5">read16</a> (byte reg)</td></tr>
+<tr class="memdesc:a9165508b9a500da269264eb3cff723a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a 16 bit value over I2C or SPI.  <a href="#a9165508b9a500da269264eb3cff723a5">More...</a><br /></td></tr>
+<tr class="separator:a9165508b9a500da269264eb3cff723a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4bed2d91b22ffdcceb5639cb2d70263"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#ac4bed2d91b22ffdcceb5639cb2d70263">read24</a> (byte reg)</td></tr>
+<tr class="memdesc:ac4bed2d91b22ffdcceb5639cb2d70263"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a 24 bit value over I2C.  <a href="#ac4bed2d91b22ffdcceb5639cb2d70263">More...</a><br /></td></tr>
+<tr class="separator:ac4bed2d91b22ffdcceb5639cb2d70263"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a305e8f9b95016096b07e30cad0b856"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a1a305e8f9b95016096b07e30cad0b856">readS16</a> (byte reg)</td></tr>
+<tr class="memdesc:a1a305e8f9b95016096b07e30cad0b856"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a signed 16 bit value over I2C or SPI.  <a href="#a1a305e8f9b95016096b07e30cad0b856">More...</a><br /></td></tr>
+<tr class="separator:a1a305e8f9b95016096b07e30cad0b856"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacbb1b88d1922a00a751a7566838e1fe"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#aacbb1b88d1922a00a751a7566838e1fe">read16_LE</a> (byte reg)</td></tr>
+<tr class="memdesc:aacbb1b88d1922a00a751a7566838e1fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a signed 16 bit little endian value over I2C or SPI.  <a href="#aacbb1b88d1922a00a751a7566838e1fe">More...</a><br /></td></tr>
+<tr class="separator:aacbb1b88d1922a00a751a7566838e1fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34f5961586cf2617ad004efa1eb6cdf4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a34f5961586cf2617ad004efa1eb6cdf4">readS16_LE</a> (byte reg)</td></tr>
+<tr class="memdesc:a34f5961586cf2617ad004efa1eb6cdf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a signed little endian 16 bit value over I2C or SPI.  <a href="#a34f5961586cf2617ad004efa1eb6cdf4">More...</a><br /></td></tr>
+<tr class="separator:a34f5961586cf2617ad004efa1eb6cdf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a7178ac54add918b92e4d806e4f710e74"><td class="memItemLeft" align="right" valign="top"><a id="a7178ac54add918b92e4d806e4f710e74"></a>
+TwoWire *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a7178ac54add918b92e4d806e4f710e74">_wire</a></td></tr>
+<tr class="memdesc:a7178ac54add918b92e4d806e4f710e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to a TwoWire object <br /></td></tr>
+<tr class="separator:a7178ac54add918b92e4d806e4f710e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfe9fed7eafe505fce7a4b0fba584fba"><td class="memItemLeft" align="right" valign="top"><a id="acfe9fed7eafe505fce7a4b0fba584fba"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#acfe9fed7eafe505fce7a4b0fba584fba">_i2caddr</a></td></tr>
+<tr class="memdesc:acfe9fed7eafe505fce7a4b0fba584fba"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C addr for the TwoWire interface. <br /></td></tr>
+<tr class="separator:acfe9fed7eafe505fce7a4b0fba584fba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c0070673a876a971ef7315a5778dcd8"><td class="memItemLeft" align="right" valign="top"><a id="a5c0070673a876a971ef7315a5778dcd8"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a5c0070673a876a971ef7315a5778dcd8">_sensorID</a></td></tr>
+<tr class="memdesc:a5c0070673a876a971ef7315a5778dcd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">ID of the BME Sensor. <br /></td></tr>
+<tr class="separator:a5c0070673a876a971ef7315a5778dcd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d29a42e8046d1958a5d729571bea8d0"><td class="memItemLeft" align="right" valign="top"><a id="a8d29a42e8046d1958a5d729571bea8d0"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a8d29a42e8046d1958a5d729571bea8d0">t_fine</a></td></tr>
+<tr class="memdesc:a8d29a42e8046d1958a5d729571bea8d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">temperature with high resolution, stored as an attribute as this is used for temperature compensation reading humidity and pressure <br /></td></tr>
+<tr class="separator:a8d29a42e8046d1958a5d729571bea8d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdd222f075d4e7578cd62daae2e8003a"><td class="memItemLeft" align="right" valign="top"><a id="abdd222f075d4e7578cd62daae2e8003a"></a>
+int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#abdd222f075d4e7578cd62daae2e8003a">_cs</a></td></tr>
+<tr class="memdesc:abdd222f075d4e7578cd62daae2e8003a"><td class="mdescLeft">&#160;</td><td class="mdescRight">for the SPI interface <br /></td></tr>
+<tr class="separator:abdd222f075d4e7578cd62daae2e8003a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b0c106ffefc7f50608da1862efc6fac"><td class="memItemLeft" align="right" valign="top"><a id="a7b0c106ffefc7f50608da1862efc6fac"></a>
+int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a7b0c106ffefc7f50608da1862efc6fac">_mosi</a></td></tr>
+<tr class="memdesc:a7b0c106ffefc7f50608da1862efc6fac"><td class="mdescLeft">&#160;</td><td class="mdescRight">for the SPI interface <br /></td></tr>
+<tr class="separator:a7b0c106ffefc7f50608da1862efc6fac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0c4c6ba40923bb3465cd1572e9fbdab"><td class="memItemLeft" align="right" valign="top"><a id="ab0c4c6ba40923bb3465cd1572e9fbdab"></a>
+int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#ab0c4c6ba40923bb3465cd1572e9fbdab">_miso</a></td></tr>
+<tr class="memdesc:ab0c4c6ba40923bb3465cd1572e9fbdab"><td class="mdescLeft">&#160;</td><td class="mdescRight">for the SPI interface <br /></td></tr>
+<tr class="separator:ab0c4c6ba40923bb3465cd1572e9fbdab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae676c0bd7f7d9acf6850df97ab88e8bb"><td class="memItemLeft" align="right" valign="top"><a id="ae676c0bd7f7d9acf6850df97ab88e8bb"></a>
+int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#ae676c0bd7f7d9acf6850df97ab88e8bb">_sck</a></td></tr>
+<tr class="memdesc:ae676c0bd7f7d9acf6850df97ab88e8bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">for the SPI interface <br /></td></tr>
+<tr class="separator:ae676c0bd7f7d9acf6850df97ab88e8bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a459dad3bcef4e82568377e00c05c3d30"><td class="memItemLeft" align="right" valign="top"><a id="a459dad3bcef4e82568377e00c05c3d30"></a>
+<a class="el" href="structbme280__calib__data.html">bme280_calib_data</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a459dad3bcef4e82568377e00c05c3d30">_bme280_calib</a></td></tr>
+<tr class="memdesc:a459dad3bcef4e82568377e00c05c3d30"><td class="mdescLeft">&#160;</td><td class="mdescRight">here calibration data is stored <br /></td></tr>
+<tr class="separator:a459dad3bcef4e82568377e00c05c3d30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a039c1569d4ce4b6f4574da513ec5260d"><td class="memItemLeft" align="right" valign="top"><a id="a039c1569d4ce4b6f4574da513ec5260d"></a>
+<a class="el" href="struct_adafruit___b_m_e280_1_1config.html">config</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a039c1569d4ce4b6f4574da513ec5260d">_configReg</a></td></tr>
+<tr class="memdesc:a039c1569d4ce4b6f4574da513ec5260d"><td class="mdescLeft">&#160;</td><td class="mdescRight">config register object <br /></td></tr>
+<tr class="separator:a039c1569d4ce4b6f4574da513ec5260d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8764be31eea714031b00106be727a79"><td class="memItemLeft" align="right" valign="top"><a id="ac8764be31eea714031b00106be727a79"></a>
+<a class="el" href="struct_adafruit___b_m_e280_1_1ctrl__meas.html">ctrl_meas</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#ac8764be31eea714031b00106be727a79">_measReg</a></td></tr>
+<tr class="memdesc:ac8764be31eea714031b00106be727a79"><td class="mdescLeft">&#160;</td><td class="mdescRight">measurement register object <br /></td></tr>
+<tr class="separator:ac8764be31eea714031b00106be727a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a503a04dcf58f42c8fe7eee5d83eca975"><td class="memItemLeft" align="right" valign="top"><a id="a503a04dcf58f42c8fe7eee5d83eca975"></a>
+<a class="el" href="struct_adafruit___b_m_e280_1_1ctrl__hum.html">ctrl_hum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a503a04dcf58f42c8fe7eee5d83eca975">_humReg</a></td></tr>
+<tr class="memdesc:a503a04dcf58f42c8fe7eee5d83eca975"><td class="mdescLeft">&#160;</td><td class="mdescRight">hum register object <br /></td></tr>
+<tr class="separator:a503a04dcf58f42c8fe7eee5d83eca975"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that stores state and functions for interacting with BME280 IC. </p>
@@ -568,6 +667,325 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the pressure at sea level (in hPa) from the specified altitude </dd></dl>
+
+</div>
+</div>
+<a id="aa2dc2bb5d3909f9941638cc65e5c3cfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2dc2bb5d3909f9941638cc65e5c3cfd">&#9670;&nbsp;</a></span>isReadingCalibration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Adafruit_BME280::isReadingCalibration </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>return true if chip is busy reading cal data </p>
+<dl class="section return"><dt>Returns</dt><dd>true if reading calibration, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a075b717c0c4011d25729f5bf69d44803"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a075b717c0c4011d25729f5bf69d44803">&#9670;&nbsp;</a></span>spixfer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t Adafruit_BME280::spixfer </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Encapsulate hardware and software SPI transfer into one function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the data byte to transfer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the data byte read from the device </dd></dl>
+
+</div>
+</div>
+<a id="a037ec3befbf70abd25d11f1822373d36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a037ec3befbf70abd25d11f1822373d36">&#9670;&nbsp;</a></span>write8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Adafruit_BME280::write8 </td>
+          <td>(</td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>reg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Writes an 8 bit value over I2C or SPI. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reg</td><td>the register address to write to </td></tr>
+    <tr><td class="paramname">value</td><td>the value to write to the register </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a52c2dcf7854222e5801ee4bb84e67d47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52c2dcf7854222e5801ee4bb84e67d47">&#9670;&nbsp;</a></span>read8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t Adafruit_BME280::read8 </td>
+          <td>(</td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>reg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reads an 8 bit value over I2C or SPI. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reg</td><td>the register address to read from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the data byte read from the device </dd></dl>
+
+</div>
+</div>
+<a id="a9165508b9a500da269264eb3cff723a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9165508b9a500da269264eb3cff723a5">&#9670;&nbsp;</a></span>read16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t Adafruit_BME280::read16 </td>
+          <td>(</td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>reg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reads a 16 bit value over I2C or SPI. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reg</td><td>the register address to read from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the 16 bit data value read from the device </dd></dl>
+
+</div>
+</div>
+<a id="ac4bed2d91b22ffdcceb5639cb2d70263"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4bed2d91b22ffdcceb5639cb2d70263">&#9670;&nbsp;</a></span>read24()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t Adafruit_BME280::read24 </td>
+          <td>(</td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>reg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reads a 24 bit value over I2C. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reg</td><td>the register address to read from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the 24 bit data value read from the device </dd></dl>
+
+</div>
+</div>
+<a id="a1a305e8f9b95016096b07e30cad0b856"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a305e8f9b95016096b07e30cad0b856">&#9670;&nbsp;</a></span>readS16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t Adafruit_BME280::readS16 </td>
+          <td>(</td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>reg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reads a signed 16 bit value over I2C or SPI. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reg</td><td>the register address to read from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the 16 bit data value read from the device </dd></dl>
+
+</div>
+</div>
+<a id="aacbb1b88d1922a00a751a7566838e1fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacbb1b88d1922a00a751a7566838e1fe">&#9670;&nbsp;</a></span>read16_LE()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t Adafruit_BME280::read16_LE </td>
+          <td>(</td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>reg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reads a signed 16 bit little endian value over I2C or SPI. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reg</td><td>the register address to read from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the 16 bit data value read from the device </dd></dl>
+
+</div>
+</div>
+<a id="a34f5961586cf2617ad004efa1eb6cdf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34f5961586cf2617ad004efa1eb6cdf4">&#9670;&nbsp;</a></span>readS16_LE()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t Adafruit_BME280::readS16_LE </td>
+          <td>(</td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>reg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reads a signed little endian 16 bit value over I2C or SPI. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reg</td><td>the register address to read from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the 16 bit data value read from the device </dd></dl>
 
 </div>
 </div>
