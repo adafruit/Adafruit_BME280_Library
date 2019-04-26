@@ -35,6 +35,7 @@
 */
 /**************************************************************************/
     #define BME280_ADDRESS                (0x77)
+    #define BME280_ADDRESS_ALTERNATE      (0x76)
 /*=========================================================================*/
 
 /**************************************************************************/
@@ -218,7 +219,7 @@ class Adafruit_BME280 {
         
         float readAltitude(float seaLevel);
         float seaLevelForAltitude(float altitude, float pressure);
-
+		uint32_t sensorID(void);
         
     protected:
 		TwoWire *_wire; //!< pointer to a TwoWire object

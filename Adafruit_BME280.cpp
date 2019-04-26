@@ -116,9 +116,15 @@ bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire)
 /**************************************************************************/
 bool Adafruit_BME280::begin(void)
 {
+    bool status = false;
     _i2caddr = BME280_ADDRESS;
 	_wire = &Wire;
-	return init();
+	status = init();
+ 	if(!status){
+ 		_i2caddr = BME280_ADDRESS_ALTERNATE;
+ 		status = init();
+ 		}
+	return status;
 }
 
 /**************************************************************************/
@@ -148,7 +154,8 @@ bool Adafruit_BME280::init()
     }
 
     // check if sensor, i.e. the chip ID is correct
-    if (read8(BME280_REGISTER_CHIPID) != 0x60)
+    _sensorID = read8(BME280_REGISTER_CHIPID);
+    if (_sensorID != 0x60)
         return false;
 
     // reset the device using soft-reset
@@ -611,4 +618,15 @@ float Adafruit_BME280::seaLevelForAltitude(float altitude, float atmospheric)
     //  http://forums.adafruit.com/viewtopic.php?f=22&t=58064
 
     return atmospheric / pow(1.0 - (altitude/44330.0), 5.255);
+}
+		
+/**************************************************************************/
+/*!
+    Returns Sensor ID found by init() for diagnostics 
+    @returns Sensor ID 0x60 for BME280, 0x56, 0x57, 0x58 BMP280
+*/
+/**************************************************************************/
+uint32_t Adafruit_BME280::sensorID(void)
+{
+	return _sensorID;
 }

@@ -35,15 +35,21 @@ unsigned long delayTime;
 
 void setup() {
     Serial.begin(9600);
+    delay(4000);    // time to get serial running
     Serial.println(F("BME280 test"));
 
-    bool status;
+    unsigned status;
     
     // default settings
     // (you can also pass in a Wire library object like &Wire2)
     status = bme.begin();  
     if (!status) {
-        Serial.println("Could not find a valid BME280 sensor, check wiring!");
+        Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
+        Serial.print("SensorID was: 0x"); Serial.println(bme.sensorID(),16);
+        Serial.print("        ID of 0xFF probably means a bad address, a BMP 180 or BMP 085\n");
+        Serial.print("   ID of 0x56-0x58 represents a BMP 280,\n");
+        Serial.print("        ID of 0x60 represents a BME 280.\n");
+        Serial.print("        ID of 0x61 represents a BME 680.\n");
         while (1);
     }
     
