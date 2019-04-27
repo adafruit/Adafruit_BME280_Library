@@ -14,6 +14,7 @@
  * Written by Kevin "KTOWN" Townsend for Adafruit Industries.
  *
  * BSD license, all text here must be included in any redistribution.
+ * See the LICENSE file for details.
  *
  */
 

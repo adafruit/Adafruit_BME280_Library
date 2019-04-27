@@ -24,6 +24,7 @@
  * @section license License
  *
  * BSD license, all text here must be included in any redistribution.
+ * See the LICENSE file for details.
  *
  */
 

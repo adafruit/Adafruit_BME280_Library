@@ -13,6 +13,7 @@
 
   Written by Limor Fried & Kevin Townsend for Adafruit Industries.
   BSD license, all text above must be included in any redistribution
+  See the LICENSE file for details.
  ***************************************************************************/
 
 #include <Wire.h>
