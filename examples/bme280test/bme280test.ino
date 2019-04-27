@@ -35,7 +35,7 @@ unsigned long delayTime;
 
 void setup() {
     Serial.begin(9600);
-    delay(4000);    // time to get serial running
+    while(!Serial);    // time to get serial running
     Serial.println(F("BME280 test"));
 
     unsigned status;
