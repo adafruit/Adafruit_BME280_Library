@@ -133,6 +133,7 @@ void loop() {
     bme.takeForcedMeasurement(); // has no effect in normal mode
     
     printValues();
+    bme.sensorSleep(); // Place BME280 into sleep mode
     delay(delayTime);
 }
 
