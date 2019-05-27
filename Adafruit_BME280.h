@@ -14,7 +14,6 @@
  * Written by Kevin "KTOWN" Townsend for Adafruit Industries.
  *
  * BSD license, all text here must be included in any redistribution.
- * See the LICENSE file for details.
  *
  */
 
@@ -35,13 +34,7 @@
     @brief  default I2C address
 */
 /**************************************************************************/
-    #define BME280_ADDRESS                (0x77)	// Primary I2C Address
-/**************************************************************************/
-/*! 
-    @brief  alternate I2C address
-*/
-/**************************************************************************/
-    #define BME280_ADDRESS_ALTERNATE      (0x76)	// Alternate Address
+    #define BME280_ADDRESS                (0x77)
 /*=========================================================================*/
 
 /**************************************************************************/
@@ -130,6 +123,7 @@ class Adafruit_BME280_Unified : public Adafruit_Sensor
     float seaLevelForAltitude(float altitude, float atmospheric, float temp);
     void  getEvent(sensors_event_t*);
     void  getSensor(sensor_t*);
+    void  sensorSleep(void);
 
   private:
     uint8_t   _i2c_addr;
@@ -145,11 +139,11 @@ class Adafruit_BME280_Unified : public Adafruit_Sensor
 /**************************************************************************/
 class Adafruit_BME280 {
     public:
-        /**************************************************************************/
-        /*! 
-            @brief  sampling rates
-        */
-        /**************************************************************************/
+    /**************************************************************************/
+    /*! 
+        @brief  sampling rates
+    */
+    /**************************************************************************/
         enum sensor_sampling {
             SAMPLING_NONE = 0b000,
             SAMPLING_X1   = 0b001,
@@ -225,11 +219,12 @@ class Adafruit_BME280 {
         
         float readAltitude(float seaLevel);
         float seaLevelForAltitude(float altitude, float pressure);
-		uint32_t sensorID(void);
+        void  sensorSleep(void);
+
         
-    protected:
-		TwoWire *_wire; //!< pointer to a TwoWire object
-        void readCoefficients(void); 
+    private:
+		TwoWire *_wire;
+        void readCoefficients(void);
         bool isReadingCalibration(void);
         uint8_t spixfer(uint8_t x);
 
@@ -241,23 +236,15 @@ class Adafruit_BME280 {
         uint16_t  read16_LE(byte reg); // little endian
         int16_t   readS16_LE(byte reg); // little endian
 
-        uint8_t   _i2caddr; //!< I2C addr for the TwoWire interface
-        int32_t   _sensorID; //!< ID of the BME Sensor
-        int32_t   t_fine; //!< temperature with high resolution, stored as an attribute as this is used for temperature compensation reading humidity and pressure
+        uint8_t   _i2caddr;
+        int32_t   _sensorID;
+        int32_t   t_fine;
 
-        int8_t _cs;   //!< for the SPI interface
-        int8_t _mosi; //!< for the SPI interface
-        int8_t _miso; //!< for the SPI interface
-        int8_t _sck;  //!< for the SPI interface
+        int8_t _cs, _mosi, _miso, _sck;
 
-        bme280_calib_data _bme280_calib; //!< here calibration data is stored
+        bme280_calib_data _bme280_calib;
 
-
-        /**************************************************************************/
-        /*! 
-            @brief  config register
-        */
-        /**************************************************************************/                
+        // The config register
         struct config {
             // inactive duration (standby time) in normal mode
             // 000 = 0.5 ms
@@ -268,7 +255,7 @@ class Adafruit_BME280 {
             // 101 = 1000 ms
             // 110 = 10 ms
             // 111 = 20 ms
-            unsigned int t_sb : 3; ///< inactive duration (standby time) in normal mode
+            unsigned int t_sb : 3;
 
             // filter settings
             // 000 = filter off
@@ -276,25 +263,20 @@ class Adafruit_BME280 {
             // 010 = 4x filter
             // 011 = 8x filter
             // 100 and above = 16x filter
-            unsigned int filter : 3; ///< filter settings
+            unsigned int filter : 3;
 
             // unused - don't set
-            unsigned int none : 1;  ///< unused - don't set
-            unsigned int spi3w_en : 1; ///< unused - don't set
+            unsigned int none : 1;
+            unsigned int spi3w_en : 1;
 
-            /// @return combined config register
             unsigned int get() {
                 return (t_sb << 5) | (filter << 2) | spi3w_en;
             }
         };
-        config _configReg; //!< config register object
+        config _configReg;
 
         
-        /**************************************************************************/
-        /*! 
-            @brief  ctrl_meas register
-        */
-        /**************************************************************************/                
+        // The ctrl_meas register
         struct ctrl_meas {
             // temperature oversampling
             // 000 = skipped
@@ -303,7 +285,7 @@ class Adafruit_BME280 {
             // 011 = x4
             // 100 = x8
             // 101 and above = x16
-            unsigned int osrs_t : 3; ///< temperature oversampling
+            unsigned int osrs_t : 3;
 
             // pressure oversampling
             // 000 = skipped
@@ -312,29 +294,24 @@ class Adafruit_BME280 {
             // 011 = x4
             // 100 = x8
             // 101 and above = x16
-            unsigned int osrs_p : 3; ///< pressure oversampling
+            unsigned int osrs_p : 3;
 
             // device mode
             // 00       = sleep
             // 01 or 10 = forced
             // 11       = normal
-            unsigned int mode : 2; ///< device mode
+            unsigned int mode : 2;
 
-            /// @return combined ctrl register
             unsigned int get() {
                 return (osrs_t << 5) | (osrs_p << 2) | mode;
             }
         };
-        ctrl_meas _measReg; //!< measurement register object
+        ctrl_meas _measReg;
 
         
-        /**************************************************************************/
-        /*! 
-            @brief  ctrl_hum register
-        */
-        /**************************************************************************/        
+        // The ctrl_hum register
         struct ctrl_hum {
-            /// unused - don't set
+            // unused - don't set
             unsigned int none : 5;
 
             // pressure oversampling
@@ -344,14 +321,13 @@ class Adafruit_BME280 {
             // 011 = x4
             // 100 = x8
             // 101 and above = x16
-            unsigned int osrs_h : 3; ///< pressure oversampling
+            unsigned int osrs_h : 3;
 
-            /// @return combined ctrl hum register
             unsigned int get() {
                 return (osrs_h);
             }
         };
-        ctrl_hum _humReg; //!< hum register object
+        ctrl_hum _humReg;
 };
 
 #endif

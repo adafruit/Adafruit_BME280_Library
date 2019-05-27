@@ -11,7 +11,7 @@
  * to interface.
  *
  * Designed specifically to work with the Adafruit BME280 Breakout
- * ----> http://www.adafruit.com/products/2652
+ * ----> http://www.adafruit.com/products/2650
  *    
  *  Adafruit invests time and resources providing this open source code, 
  *  please support Adafruit and open-source hardware by purchasing 
@@ -24,7 +24,6 @@
  * @section license License
  *
  * BSD license, all text here must be included in any redistribution.
- * See the LICENSE file for details.
  *
  */
 
@@ -117,15 +116,9 @@ bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire)
 /**************************************************************************/
 bool Adafruit_BME280::begin(void)
 {
-    bool status = false;
     _i2caddr = BME280_ADDRESS;
 	_wire = &Wire;
-	status = init();
- 	if(!status){
- 		_i2caddr = BME280_ADDRESS_ALTERNATE;
- 		status = init();
- 		}
-	return status;
+	return init();
 }
 
 /**************************************************************************/
@@ -139,7 +132,7 @@ bool Adafruit_BME280::init()
     // init I2C or SPI sensor interface
     if (_cs == -1) {
         // I2C
-        _wire -> begin();
+       _wire -> begin();
     } else {
         digitalWrite(_cs, HIGH);
         pinMode(_cs, OUTPUT);
@@ -155,8 +148,7 @@ bool Adafruit_BME280::init()
     }
 
     // check if sensor, i.e. the chip ID is correct
-    _sensorID = read8(BME280_REGISTER_CHIPID);
-    if (_sensorID != 0x60)
+    if (read8(BME280_REGISTER_CHIPID) != 0x60)
         return false;
 
     // reset the device using soft-reset
@@ -620,14 +612,13 @@ float Adafruit_BME280::seaLevelForAltitude(float altitude, float atmospheric)
 
     return atmospheric / pow(1.0 - (altitude/44330.0), 5.255);
 }
-		
 /**************************************************************************/
 /*!
-    Returns Sensor ID found by init() for diagnostics 
-    @returns Sensor ID 0x60 for BME280, 0x56, 0x57, 0x58 BMP280
+    Places BME280 into sleep mode reducing power consumption by a facort of 10
 */
 /**************************************************************************/
-uint32_t Adafruit_BME280::sensorID(void)
-{
-	return _sensorID;
+void Adafruit_BME280::sensorSleep(void) {
+  byte value = read8(BME280_REGISTER_CONTROL);
+  value = (value & 0xFC) + 0x01;
+  write8(BME280_REGISTER_CONTROL, value);
 }
