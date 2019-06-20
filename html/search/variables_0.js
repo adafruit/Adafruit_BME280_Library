@@ -10,5 +10,6 @@ var searchData=
   ['_5fmosi',['_mosi',['../class_adafruit___b_m_e280.html#a7b0c106ffefc7f50608da1862efc6fac',1,'Adafruit_BME280']]],
   ['_5fsck',['_sck',['../class_adafruit___b_m_e280.html#ae676c0bd7f7d9acf6850df97ab88e8bb',1,'Adafruit_BME280']]],
   ['_5fsensorid',['_sensorID',['../class_adafruit___b_m_e280.html#a5c0070673a876a971ef7315a5778dcd8',1,'Adafruit_BME280']]],
+  ['_5fspi',['_spi',['../class_adafruit___b_m_e280.html#ab3d648b6d0e1b0a302e5b95b732a1e69',1,'Adafruit_BME280']]],
   ['_5fwire',['_wire',['../class_adafruit___b_m_e280.html#a7178ac54add918b92e4d806e4f710e74',1,'Adafruit_BME280']]]
 ];
