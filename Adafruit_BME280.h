@@ -189,7 +189,7 @@ public:
 
   // constructors
   Adafruit_BME280();
-  Adafruit_BME280(int8_t cspin, SPIClass *theSPI = &SPI)
+  Adafruit_BME280(int8_t cspin, SPIClass *theSPI = &SPI);
       Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin,
                       int8_t sckpin);
 
