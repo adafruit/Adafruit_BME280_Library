@@ -1,0 +1,31 @@
+{
+  "name": "Adafruit BME280 Library",
+  "version": "1.0.9",
+  "description":  "Arduino library for BME280 humidity, pressure and temp sensors.",
+  "keywords": "sensor, sensors, BME280, bme280, bosch, humidity, temperature, pressure, altitude",
+  "platforms": "*",
+  "frameworks": "arduino",
+  "authors": [
+    {
+      "name": "Adafruit",
+      "email": "info@adafruit.com",
+      "url": "https://www.adafruit.com/",
+      "maintainer": true
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adafruit/Adafruit_BME280_Library"
+  },
+  "examples": [
+    "examples/*/*.ino"
+  ],
+  "dependencies": [
+    {
+      "name": "Wire"
+    },
+    {
+      "name": "SPI"
+    }
+  ]
+}
