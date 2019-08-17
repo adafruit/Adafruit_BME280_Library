@@ -404,9 +404,9 @@ void Adafruit_BME280::readCoefficients(void) {
   _bme280_calib.dig_H1 = read8(BME280_REGISTER_DIG_H1);
   _bme280_calib.dig_H2 = readS16_LE(BME280_REGISTER_DIG_H2);
   _bme280_calib.dig_H3 = read8(BME280_REGISTER_DIG_H3);
-  _bme280_calib.dig_H4 = (read8(BME280_REGISTER_DIG_H4) << 4) |
+  _bme280_calib.dig_H4 = ((int8_t)read8(BME280_REGISTER_DIG_H4) << 4) |
                          (read8(BME280_REGISTER_DIG_H4 + 1) & 0xF);
-  _bme280_calib.dig_H5 = (read8(BME280_REGISTER_DIG_H5 + 1) << 4) |
+  _bme280_calib.dig_H5 = ((int8_t)read8(BME280_REGISTER_DIG_H5 + 1) << 4) |
                          (read8(BME280_REGISTER_DIG_H5) >> 4);
   _bme280_calib.dig_H6 = (int8_t)read8(BME280_REGISTER_DIG_H6);
 }
