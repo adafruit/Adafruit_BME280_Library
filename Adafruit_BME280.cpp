@@ -184,6 +184,7 @@ void Adafruit_BME280::setSampling(sensor_mode mode,
   _humReg.osrs_h = humSampling;
   _configReg.filter = filter;
   _configReg.t_sb = duration;
+  _configReg.spi3w_en = 0;
 
   // you must make sure to also set REGISTER_CONTROL after setting the
   // CONTROLHUMID register, otherwise the values won't be applied (see
