@@ -185,6 +185,11 @@ void Adafruit_BME280::setSampling(sensor_mode mode,
   _configReg.filter = filter;
   _configReg.t_sb = duration;
 
+  // making sure sensor is in sleep mode before setting configuration
+  // as it otherwise may be ignored
+  write8(BME280_REGISTER_CONTROL, MODE_SLEEP);
+ 
+
   // you must make sure to also set REGISTER_CONTROL after setting the
   // CONTROLHUMID register, otherwise the values won't be applied (see
   // DS 5.4.3)
