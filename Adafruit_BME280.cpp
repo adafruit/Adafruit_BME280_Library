@@ -33,6 +33,9 @@
 #include <SPI.h>
 #include <Wire.h>
 
+/*!
+ *  @brief Valid Sensor Identifications.
+ */
 enum {
   BMP280_SENSOR_ID = 0x58,
   BME280_SENSOR_ID = 0x60
@@ -141,7 +144,7 @@ bool Adafruit_BME280::init() {
 
   // check if sensor, i.e. the chip ID is correct
   _sensorID = read8(BME280_REGISTER_CHIPID);
-  if (_sensorID != BME280_SENSOR_ID)
+  if (_sensorID != BME280_SENSOR_ID && _sensorID != BMP280_SENSOR_ID)
     return false;
 
   // reset the device using soft-reset
@@ -194,11 +197,12 @@ void Adafruit_BME280::setSampling(sensor_mode mode,
   // as it otherwise may be ignored
   write8(BME280_REGISTER_CONTROL, MODE_SLEEP);
  
-
-  // you must make sure to also set REGISTER_CONTROL after setting the
-  // CONTROLHUMID register, otherwise the values won't be applied (see
-  // DS 5.4.3)
-  write8(BME280_REGISTER_CONTROLHUMID, _humReg.get());
+  if (_sensorID == BME280_SENSOR_ID) {
+    // you must make sure to also set REGISTER_CONTROL after setting the
+    // CONTROLHUMID register, otherwise the values won't be applied (see
+    // DS 5.4.3)
+    write8(BME280_REGISTER_CONTROLHUMID, _humReg.get());
+  }
   write8(BME280_REGISTER_CONFIG, _configReg.get());
   write8(BME280_REGISTER_CONTROL, _measReg.get());
 }
@@ -399,14 +403,16 @@ void Adafruit_BME280::readCoefficients(void) {
   dig_P8 = readS16_LE(BME280_REGISTER_DIG_P8);
   dig_P9 = readS16_LE(BME280_REGISTER_DIG_P9);
 
-  dig_H1 = read8(BME280_REGISTER_DIG_H1);
-  dig_H2 = readS16_LE(BME280_REGISTER_DIG_H2);
-  dig_H3 = read8(BME280_REGISTER_DIG_H3);
-  dig_H4 = ((int8_t)read8(BME280_REGISTER_DIG_H4) << 4) |
-                         (read8(BME280_REGISTER_DIG_H4 + 1) & 0xF);
-  dig_H5 = ((int8_t)read8(BME280_REGISTER_DIG_H5 + 1) << 4) |
-                         (read8(BME280_REGISTER_DIG_H5) >> 4);
-  dig_H6 = (int8_t)read8(BME280_REGISTER_DIG_H6);
+  if (_sensorID == BME280_SENSOR_ID) {
+    dig_H1 = read8(BME280_REGISTER_DIG_H1);
+    dig_H2 = readS16_LE(BME280_REGISTER_DIG_H2);
+    dig_H3 = read8(BME280_REGISTER_DIG_H3);
+    dig_H4 = ((int8_t)read8(BME280_REGISTER_DIG_H4) << 4) |
+                           (read8(BME280_REGISTER_DIG_H4 + 1) & 0xF);
+    dig_H5 = ((int8_t)read8(BME280_REGISTER_DIG_H5 + 1) << 4) |
+                           (read8(BME280_REGISTER_DIG_H5) >> 4);
+    dig_H6 = (int8_t)read8(BME280_REGISTER_DIG_H6);
+   }
 }
 
 /*!
@@ -488,6 +494,9 @@ float Adafruit_BME280::readPressure(void) {
  */
 float Adafruit_BME280::readHumidity(void) {
   readTemperature(); // must be done first to get t_fine
+
+  if (_sensorID != BME280_SENSOR_ID)
+    return NAN;
 
   int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
   if (adc_H == 0x8000) // value in case humidity measurement was disabled
