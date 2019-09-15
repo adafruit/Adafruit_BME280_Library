@@ -311,13 +311,6 @@ uint16_t Adafruit_BME280::read16_LE(byte reg) {
 }
 
 /*!
- *   @brief  Reads a signed 16 bit value over I2C or SPI
- *   @param reg the register address to read from
- *   @returns the 16 bit data value read from the device
- */
-int16_t Adafruit_BME280::readS16(byte reg) { return (int16_t)read16(reg); }
-
-/*!
  *   @brief  Reads a signed little endian 16 bit value over I2C or SPI
  *   @param reg the register address to read from
  *   @returns the 16 bit data value read from the device
