@@ -33,6 +33,11 @@
 #include <SPI.h>
 #include <Wire.h>
 
+enum {
+  BMP280_SENSOR_ID = 0x58,
+  BME280_SENSOR_ID = 0x60
+};
+
 /*!
  *  @brief  class constructor
  */
@@ -136,7 +141,7 @@ bool Adafruit_BME280::init() {
 
   // check if sensor, i.e. the chip ID is correct
   _sensorID = read8(BME280_REGISTER_CHIPID);
-  if (_sensorID != 0x60)
+  if (_sensorID != BME280_SENSOR_ID)
     return false;
 
   // reset the device using soft-reset
