@@ -34,6 +34,16 @@
 #include <Wire.h>
 
 /*!
+ *  @brief List of sensor ids that distinguish the individual variant of this
+ *  sensor family.
+ */
+
+enum {
+  BMP280_SENSOR_ID = 0x58,
+  BME280_SENSOR_ID = 0x60
+};
+
+/*!
  *  @brief  class constructor
  */
 Adafruit_BME280::Adafruit_BME280() : _cs(-1), _mosi(-1), _miso(-1), _sck(-1) {}
@@ -136,7 +146,7 @@ bool Adafruit_BME280::init() {
 
   // check if sensor, i.e. the chip ID is correct
   _sensorID = read8(BME280_REGISTER_CHIPID);
-  if (_sensorID != 0x60)
+  if (_sensorID != BME280_SENSOR_ID)
     return false;
 
   // reset the device using soft-reset
