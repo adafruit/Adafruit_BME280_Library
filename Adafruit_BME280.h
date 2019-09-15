@@ -96,11 +96,11 @@ typedef struct {
   int16_t dig_P8;  ///< pressure compensation value
   int16_t dig_P9;  ///< pressure compensation value
 
-  uint8_t dig_H1; ///< humidity compensation value
   int16_t dig_H2; ///< humidity compensation value
-  uint8_t dig_H3; ///< humidity compensation value
   int16_t dig_H4; ///< humidity compensation value
   int16_t dig_H5; ///< humidity compensation value
+  uint8_t dig_H1; ///< humidity compensation value
+  uint8_t dig_H3; ///< humidity compensation value
   int8_t dig_H6;  ///< humidity compensation value
 } bme280_calib_data;
 /*=========================================================================*/
@@ -230,11 +230,11 @@ protected:
   uint16_t read16_LE(byte reg); // little endian
   int16_t readS16_LE(byte reg); // little endian
 
-  uint8_t _i2caddr;  //!< I2C addr for the TwoWire interface
   int32_t _sensorID; //!< ID of the BME Sensor
   int32_t t_fine; //!< temperature with high resolution, stored as an attribute
                   //!< as this is used for temperature compensation reading
                   //!< humidity and pressure
+  uint8_t _i2caddr;  //!< I2C addr for the TwoWire interface
 
   int8_t _cs;   //!< for the SPI interface
   int8_t _mosi; //!< for the SPI interface
