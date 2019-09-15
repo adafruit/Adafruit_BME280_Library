@@ -76,33 +76,6 @@ enum {
   BME280_REGISTER_HUMIDDATA = 0xFD
 };
 
-/**************************************************************************/
-/*!
-    @brief  calibration data
-*/
-/**************************************************************************/
-typedef struct {
-  uint16_t dig_T1; ///< temperature compensation value
-  int16_t dig_T2;  ///< temperature compensation value
-  int16_t dig_T3;  ///< temperature compensation value
-
-  uint16_t dig_P1; ///< pressure compensation value
-  int16_t dig_P2;  ///< pressure compensation value
-  int16_t dig_P3;  ///< pressure compensation value
-  int16_t dig_P4;  ///< pressure compensation value
-  int16_t dig_P5;  ///< pressure compensation value
-  int16_t dig_P6;  ///< pressure compensation value
-  int16_t dig_P7;  ///< pressure compensation value
-  int16_t dig_P8;  ///< pressure compensation value
-  int16_t dig_P9;  ///< pressure compensation value
-
-  int16_t dig_H2; ///< humidity compensation value
-  int16_t dig_H4; ///< humidity compensation value
-  int16_t dig_H5; ///< humidity compensation value
-  uint8_t dig_H1; ///< humidity compensation value
-  uint8_t dig_H3; ///< humidity compensation value
-  int8_t dig_H6;  ///< humidity compensation value
-} bme280_calib_data;
 /*=========================================================================*/
 
 /*
@@ -233,14 +206,33 @@ protected:
   int32_t t_fine; //!< temperature with high resolution, stored as an attribute
                   //!< as this is used for temperature compensation reading
                   //!< humidity and pressure
-  uint8_t _i2caddr;  //!< I2C addr for the TwoWire interface
-
   int8_t _cs;   //!< for the SPI interface
   int8_t _mosi; //!< for the SPI interface
   int8_t _miso; //!< for the SPI interface
   int8_t _sck;  //!< for the SPI interface
 
-  bme280_calib_data _bme280_calib; //!< here calibration data is stored
+  uint16_t dig_T1; ///< temperature compensation value
+  int16_t dig_T2;  ///< temperature compensation value
+  int16_t dig_T3;  ///< temperature compensation value
+
+  uint16_t dig_P1; ///< pressure compensation value
+  int16_t dig_P2;  ///< pressure compensation value
+  int16_t dig_P3;  ///< pressure compensation value
+  int16_t dig_P4;  ///< pressure compensation value
+  int16_t dig_P5;  ///< pressure compensation value
+  int16_t dig_P6;  ///< pressure compensation value
+  int16_t dig_P7;  ///< pressure compensation value
+  int16_t dig_P8;  ///< pressure compensation value
+  int16_t dig_P9;  ///< pressure compensation value
+
+  int16_t dig_H2; ///< humidity compensation value
+  int16_t dig_H4; ///< humidity compensation value
+  int16_t dig_H5; ///< humidity compensation value
+  uint8_t dig_H1; ///< humidity compensation value
+  uint8_t dig_H3; ///< humidity compensation value
+  int8_t dig_H6;  ///< humidity compensation value
+
+  uint8_t _i2caddr;  //!< I2C addr for the TwoWire interface
 
   /**************************************************************************/
   /*!
