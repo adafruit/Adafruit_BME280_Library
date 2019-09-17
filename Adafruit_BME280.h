@@ -197,6 +197,8 @@ public:
   bool begin(TwoWire *theWire);
   bool begin(uint8_t addr);
   bool begin(uint8_t addr, TwoWire *theWire);
+  bool begin(uint8_t addr, int8_t sdapin, int8_t sclpin);
+  bool begin(uint8_t addr, int8_t sdapin, int8_t sclpin, TwoWire *theWire);
   bool init();
 
   void setSampling(sensor_mode mode = MODE_NORMAL,
@@ -240,6 +242,9 @@ protected:
   int8_t _mosi; //!< for the SPI interface
   int8_t _miso; //!< for the SPI interface
   int8_t _sck;  //!< for the SPI interface
+
+  int8_t _sda; //!< for the I2C interface
+  int8_t _scl;  //!< for the I2C interface
 
   bme280_calib_data _bme280_calib; //!< here calibration data is stored
 

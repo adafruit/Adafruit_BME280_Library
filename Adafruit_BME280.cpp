@@ -69,6 +69,8 @@ Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin,
 bool Adafruit_BME280::begin(TwoWire *theWire) {
   _wire = theWire;
   _i2caddr = BME280_ADDRESS;
+  _sda = PIN_WIRE_SDA;
+  _scl = PIN_WIRE_SCL;
   return init();
 }
 
@@ -80,6 +82,8 @@ bool Adafruit_BME280::begin(TwoWire *theWire) {
 bool Adafruit_BME280::begin(uint8_t addr) {
   _i2caddr = addr;
   _wire = &Wire;
+  _sda = PIN_WIRE_SDA;
+  _scl = PIN_WIRE_SCL;
   return init();
 }
 
@@ -92,6 +96,39 @@ bool Adafruit_BME280::begin(uint8_t addr) {
 bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
   _i2caddr = addr;
   _wire = theWire;
+  _sda = PIN_WIRE_SDA;
+  _scl = PIN_WIRE_SCL;
+  return init();
+}
+
+/*!
+ *   @brief  Initialise sensor with given parameters / settings
+ *   @param addr the I2C address the device can be found on
+ *   @param sdapin the pin to use for I2C SDA
+ *   @param sclpin the pin to use for I2C SCL
+ *   @returns true on success, false otherwise
+ */
+bool Adafruit_BME280::begin(uint8_t addr, int8_t sdapin, int8_t sclpin) {
+  _i2caddr = addr;
+  _wire = &Wire;
+  _sda = sdapin;
+  _scl = sclpin;
+  return init();
+}
+
+/*!
+ *   @brief  Initialise sensor with given parameters / settings
+ *   @param addr the I2C address the device can be found on
+ *   @param sdapin the pin to use for I2C SDA
+ *   @param sclpin the pin to use for I2C SCL
+ *   @param theWire the I2C object to use
+ *   @returns true on success, false otherwise
+ */
+bool Adafruit_BME280::begin(uint8_t addr, int8_t sdapin, int8_t sclpin, TwoWire *theWire) {
+  _i2caddr = addr;
+  _wire = theWire;
+  _sda = sdapin;
+  _scl = sclpin;
   return init();
 }
 
@@ -101,6 +138,8 @@ bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
  */
 bool Adafruit_BME280::begin(void) {
   bool status = false;
+  _sda = PIN_WIRE_SDA;
+  _scl = PIN_WIRE_SCL;
   _i2caddr = BME280_ADDRESS;
   _wire = &Wire;
   status = init();
@@ -119,7 +158,7 @@ bool Adafruit_BME280::init() {
   // init I2C or SPI sensor interface
   if (_cs == -1) {
     // I2C
-    _wire->begin();
+    _wire->begin(_sda, _scl);
   } else {
     digitalWrite(_cs, HIGH);
     pinMode(_cs, OUTPUT);
