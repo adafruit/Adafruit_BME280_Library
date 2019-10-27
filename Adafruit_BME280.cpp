@@ -144,11 +144,11 @@ bool Adafruit_BME280::init() {
   write8(BME280_REGISTER_SOFTRESET, 0xB6);
 
   // wait for chip to wake up.
-  delay(300);
+  delay(wakeUpDelay);
 
   // if chip is still reading calibration, delay
   while (isReadingCalibration())
-    delay(100);
+    delay(calibrationDelay);
 
   readCoefficients(); // read trimming parameters, see DS 4.2.2
 
@@ -563,3 +563,13 @@ float Adafruit_BME280::seaLevelForAltitude(float altitude, float atmospheric) {
  *   @returns Sensor ID 0x60 for BME280, 0x56, 0x57, 0x58 BMP280
  */
 uint32_t Adafruit_BME280::sensorID(void) { return _sensorID; }
+
+/*!
+ *   Changes delays in init() method
+ *   @param  wakeUpDelay Wake up delay uint32_t
+ *   @param  calibrationDelay Calibration delay uint32_t
+ */
+void Adafruit_BME280::setCustomInitDelay(uint32_t wakeUpDelay, uint32_t calibrationDelay) {
+  this->wakeUpDelay = wakeUpDelay;
+  this->calibrationDelay = calibrationDelay;
+}

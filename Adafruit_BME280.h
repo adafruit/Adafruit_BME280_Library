@@ -214,6 +214,7 @@ public:
   float readAltitude(float seaLevel);
   float seaLevelForAltitude(float altitude, float pressure);
   uint32_t sensorID(void);
+  void setCustomInitDelay(uint32_t wakeUpDelay, uint32_t calibrationDelay);
 
 protected:
   TwoWire *_wire; //!< pointer to a TwoWire object
@@ -230,6 +231,8 @@ protected:
   uint16_t read16_LE(byte reg); // little endian
   int16_t readS16_LE(byte reg); // little endian
 
+  uint32_t wakeUpDelay = 300;
+  uint32_t calibrationDelay = 100;
   uint8_t _i2caddr;  //!< I2C addr for the TwoWire interface
   int32_t _sensorID; //!< ID of the BME Sensor
   int32_t t_fine; //!< temperature with high resolution, stored as an attribute
