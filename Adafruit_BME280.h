@@ -231,8 +231,8 @@ protected:
   uint16_t read16_LE(byte reg); // little endian
   int16_t readS16_LE(byte reg); // little endian
 
-  uint32_t wakeUpDelay = 300;
-  uint32_t calibrationDelay = 100;
+  uint32_t wakeUpDelay = 300; //!< Delay for wake up in init() method
+  uint32_t calibrationDelay = 100; //!< Delay for calibration in init() method
   uint8_t _i2caddr;  //!< I2C addr for the TwoWire interface
   int32_t _sensorID; //!< ID of the BME Sensor
   int32_t t_fine; //!< temperature with high resolution, stored as an attribute
