@@ -63,13 +63,33 @@ Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin,
 
 /*!
  *   @brief  Initialise sensor with given parameters / settings
+ *   @param addr the I2C address the device can be found on
+ *   @param theWire the I2C object to use
+ *   @returns true on success, false otherwise
+ */
+bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
+  bool status = false;
+  _i2caddr = addr;
+  _wire = theWire;
+  status = init();
+  if ((!status) && (addr != BME280_ADDRESS)) {
+    _i2caddr = BME280_ADDRESS;
+    status = init();
+  }
+  if ((!status) && (addr != BME280_ADDRESS_ALTERNATE)) {
+    _i2caddr = BME280_ADDRESS_ALTERNATE;
+    status = init();
+  }
+  return status;
+}
+
+/*!
+ *   @brief  Initialise sensor with given parameters / settings
  *   @param theWire the I2C object to use
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::begin(TwoWire *theWire) {
-  _wire = theWire;
-  _i2caddr = BME280_ADDRESS;
-  return init();
+  return begin(BME280_ADDRESS, theWire);
 }
 
 /*!
@@ -78,21 +98,7 @@ bool Adafruit_BME280::begin(TwoWire *theWire) {
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::begin(uint8_t addr) {
-  _i2caddr = addr;
-  _wire = &Wire;
-  return init();
-}
-
-/*!
- *   @brief  Initialise sensor with given parameters / settings
- *   @param addr the I2C address the device can be found on
- *   @param theWire the I2C object to use
- *   @returns true on success, false otherwise
- */
-bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
-  _i2caddr = addr;
-  _wire = theWire;
-  return init();
+  return begin(addr, &Wire);
 }
 
 /*!
@@ -100,15 +106,7 @@ bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::begin(void) {
-  bool status = false;
-  _i2caddr = BME280_ADDRESS;
-  _wire = &Wire;
-  status = init();
-  if (!status) {
-    _i2caddr = BME280_ADDRESS_ALTERNATE;
-    status = init();
-  }
-  return status;
+  return begin(BME280_ADDRESS, &Wire);
 }
 
 /*!
