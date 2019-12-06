@@ -68,19 +68,9 @@ Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin,
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
-  bool status = false;
   _i2caddr = addr;
   _wire = theWire;
-  status = init();
-  if ((!status) && (addr != BME280_ADDRESS)) {
-    _i2caddr = BME280_ADDRESS;
-    status = init();
-  }
-  if ((!status) && (addr != BME280_ADDRESS_ALTERNATE)) {
-    _i2caddr = BME280_ADDRESS_ALTERNATE;
-    status = init();
-  }
-  return status;
+  return init();
 }
 
 /*!
@@ -89,7 +79,12 @@ bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::begin(TwoWire *theWire) {
-  return begin(BME280_ADDRESS, theWire);
+  bool status = false;
+  status = begin(BME280_ADDRESS, theWire);
+  if (!status) {
+  	status = begin(BME280_ADDRESS_ALTERNATE, theWire);
+  }
+  return status;
 }
 
 /*!
@@ -106,7 +101,7 @@ bool Adafruit_BME280::begin(uint8_t addr) {
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::begin(void) {
-  return begin(BME280_ADDRESS, &Wire);
+  return begin(&Wire);
 }
 
 /*!
