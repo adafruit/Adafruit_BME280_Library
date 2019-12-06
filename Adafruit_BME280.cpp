@@ -82,7 +82,7 @@ bool Adafruit_BME280::begin(TwoWire *theWire) {
   bool status = false;
   status = begin(BME280_ADDRESS, theWire);
   if (!status) {
-  	status = begin(BME280_ADDRESS_ALTERNATE, theWire);
+    status = begin(BME280_ADDRESS_ALTERNATE, theWire);
   }
   return status;
 }
