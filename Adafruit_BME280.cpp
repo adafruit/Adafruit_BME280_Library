@@ -79,12 +79,7 @@ bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::begin(TwoWire *theWire) {
-  bool status = false;
-  status = begin(BME280_ADDRESS, theWire);
-  if (!status) {
-    status = begin(BME280_ADDRESS_ALTERNATE, theWire);
-  }
-  return status;
+  return begin(BME280_ADDRESS, theWire);
 }
 
 /*!
@@ -101,7 +96,7 @@ bool Adafruit_BME280::begin(uint8_t addr) {
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::begin(void) {
-  return begin(&Wire);
+  return begin(BME280_ADDRESS, &Wire);
 }
 
 /*!
