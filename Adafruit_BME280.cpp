@@ -61,8 +61,6 @@ Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin,
                                  int8_t sckpin)
     : _cs(cspin), _mosi(mosipin), _miso(misopin), _sck(sckpin) {}
 
-
-
 Adafruit_BME280::~Adafruit_BME280(void) {
   if (temp_sensor) {
     delete temp_sensor;
@@ -74,7 +72,6 @@ Adafruit_BME280::~Adafruit_BME280(void) {
     delete humidity_sensor;
   }
 }
-
 
 /*!
  *   @brief  Initialise sensor with given parameters / settings
@@ -548,7 +545,7 @@ uint32_t Adafruit_BME280::sensorID(void) { return _sensorID; }
     @return Adafruit_Sensor pointer to temperature sensor
  */
 Adafruit_Sensor *Adafruit_BME280::getTemperatureSensor(void) {
-  if (! temp_sensor) {
+  if (!temp_sensor) {
     temp_sensor = new Adafruit_BME280_Temp(this);
   }
 
@@ -561,7 +558,7 @@ Adafruit_Sensor *Adafruit_BME280::getTemperatureSensor(void) {
     @return Adafruit_Sensor pointer to pressure sensor
  */
 Adafruit_Sensor *Adafruit_BME280::getPressureSensor(void) {
-  if (! pressure_sensor) {
+  if (!pressure_sensor) {
     pressure_sensor = new Adafruit_BME280_Pressure(this);
   }
   return pressure_sensor;
@@ -573,7 +570,7 @@ Adafruit_Sensor *Adafruit_BME280::getPressureSensor(void) {
     @return Adafruit_Sensor pointer to humidity sensor
  */
 Adafruit_Sensor *Adafruit_BME280::getHumiditySensor(void) {
-  if (! humidity_sensor) {
+  if (!humidity_sensor) {
     humidity_sensor = new Adafruit_BME280_Humidity(this);
   }
   return humidity_sensor;
