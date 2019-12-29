@@ -105,26 +105,49 @@ typedef struct {
 } bme280_calib_data;
 /*=========================================================================*/
 
-/*
-class Adafruit_BME280_Unified : public Adafruit_Sensor
-{
-  public:
-    Adafruit_BME280_Unified(int32_t sensorID = -1);
+class Adafruit_BME280;
 
-    bool  begin(uint8_t addr = BME280_ADDRESS);
-    void  getTemperature(float *temp);
-    void  getPressure(float *pressure);
-    float pressureToAltitude(float seaLevel, float atmospheric, float temp);
-    float seaLevelForAltitude(float altitude, float atmospheric, float temp);
-    void  getEvent(sensors_event_t*);
-    void  getSensor(sensor_t*);
+/** Adafruit Unified Sensor interface for temperature component of BME280 */
+class Adafruit_BME280_Temp : public Adafruit_Sensor {
+public:
+  /** @brief Create an Adafruit_Sensor compatible object for the temp sensor
+      @param parent A pointer to the BME280 class */
+  Adafruit_BME280_Temp(Adafruit_BME280 *parent) { _theBME280 = parent; }
+  bool getEvent(sensors_event_t *);
+  void getSensor(sensor_t *);
 
-  private:
-    uint8_t   _i2c_addr;
-    int32_t   _sensorID;
+private:
+  int _sensorID = 280;
+  Adafruit_BME280 *_theBME280 = NULL;
 };
 
-*/
+/** Adafruit Unified Sensor interface for pressure component of BME280 */
+class Adafruit_BME280_Pressure : public Adafruit_Sensor {
+public:
+  /** @brief Create an Adafruit_Sensor compatible object for the pressure sensor
+      @param parent A pointer to the BME280 class */
+  Adafruit_BME280_Pressure(Adafruit_BME280 *parent) { _theBME280 = parent; }
+  bool getEvent(sensors_event_t *);
+  void getSensor(sensor_t *);
+
+private:
+  int _sensorID = 280;
+  Adafruit_BME280 *_theBME280 = NULL;
+};
+
+/** Adafruit Unified Sensor interface for humidity component of BME280 */
+class Adafruit_BME280_Humidity : public Adafruit_Sensor {
+public:
+  /** @brief Create an Adafruit_Sensor compatible object for the humidity sensor
+      @param parent A pointer to the BME280 class */
+  Adafruit_BME280_Humidity(Adafruit_BME280 *parent) { _theBME280 = parent; }
+  bool getEvent(sensors_event_t *);
+  void getSensor(sensor_t *);
+
+private:
+  int _sensorID = 280;
+  Adafruit_BME280 *_theBME280 = NULL;
+};
 
 /**************************************************************************/
 /*!
@@ -190,10 +213,9 @@ public:
   // constructors
   Adafruit_BME280();
   Adafruit_BME280(int8_t cspin, SPIClass *theSPI = &SPI);
-  Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin,
-                      int8_t sckpin);
-
-  bool begin(uint8_t addr=BME280_ADDRESS, TwoWire *theWire=&Wire);
+  Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
+  ~Adafruit_BME280(void);
+  bool begin(uint8_t addr = BME280_ADDRESS, TwoWire *theWire = &Wire);
   bool init();
 
   void setSampling(sensor_mode mode = MODE_NORMAL,
@@ -212,9 +234,23 @@ public:
   float seaLevelForAltitude(float altitude, float pressure);
   uint32_t sensorID(void);
 
+  Adafruit_Sensor *getTemperatureSensor(void);
+  Adafruit_Sensor *getPressureSensor(void);
+  Adafruit_Sensor *getHumiditySensor(void);
+
 protected:
   TwoWire *_wire; //!< pointer to a TwoWire object
   SPIClass *_spi; //!< pointer to SPI object
+
+  Adafruit_BME280_Temp *temp_sensor = NULL;
+  //!< Adafruit_Sensor compat temperature sensor component
+
+  Adafruit_BME280_Pressure *pressure_sensor = NULL;
+  //!< Adafruit_Sensor compat pressure sensor component
+
+  Adafruit_BME280_Humidity *humidity_sensor = NULL;
+  //!< Adafruit_Sensor compat humidity sensor component
+
   void readCoefficients(void);
   bool isReadingCalibration(void);
   uint8_t spixfer(uint8_t x);

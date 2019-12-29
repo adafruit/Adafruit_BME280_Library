@@ -1,4 +1,4 @@
-# Adafruit BME280 Library [![Build Status](https://travis-ci.com/adafruit/Adafruit_BME280_Library.svg?branch=master)](https://travis-ci.com/adafruit/Adafruit_BME280_Library)
+# Adafruit BME280 Library ![Build Status](https://github.com/adafruit/Adafruit_BME280_Library/workflows/Arduino%20Library%20CI/badge.svg)
 
 <a href="http://www.adafruit.com/products/2652"><img src="./assets/board.jpg" width="500"/></a>
 
