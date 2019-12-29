@@ -545,6 +545,15 @@ Adafruit_Sensor *Adafruit_BME280::getPressureSensor(void) {
   return pressure_sensor;
 }
 
+/*!
+    @brief  Gets an Adafruit Unified Sensor object for the humidity sensor
+   component
+    @return Adafruit_Sensor pointer to humidity sensor
+ */
+Adafruit_Sensor *Adafruit_BME280::getHumiditySensor(void) {
+  return humidity_sensor;
+}
+
 /**************************************************************************/
 /*!
     @brief  Gets the sensor_t data for the BME280's temperature sensor
@@ -622,5 +631,45 @@ bool Adafruit_BME280_Pressure::getEvent(sensors_event_t *event) {
   event->type = SENSOR_TYPE_PRESSURE;
   event->timestamp = millis();
   event->pressure = _theBME280->readPressure() / 100; // convert Pa to hPa
+  return true;
+}
+
+/**************************************************************************/
+/*!
+    @brief  Gets the sensor_t data for the BME280's humidity sensor
+*/
+/**************************************************************************/
+void Adafruit_BME280_Humidity::getSensor(sensor_t *sensor) {
+  /* Clear the sensor_t object */
+  memset(sensor, 0, sizeof(sensor_t));
+
+  /* Insert the sensor name in the fixed length char array */
+  strncpy(sensor->name, "BME280", sizeof(sensor->name) - 1);
+  sensor->name[sizeof(sensor->name) - 1] = 0;
+  sensor->version = 1;
+  sensor->sensor_id = _sensorID;
+  sensor->type = SENSOR_TYPE_RELATIVE_HUMIDITY;
+  sensor->min_delay = 0;
+  sensor->min_value = 0;
+  sensor->max_value = 100; /* 0 - 100 %  */
+  sensor->resolution = 3;  /* 3% accuracy */
+}
+
+/**************************************************************************/
+/*!
+    @brief  Gets the humidity as a standard sensor event
+    @param  event Sensor event object that will be populated
+    @returns True
+*/
+/**************************************************************************/
+bool Adafruit_BME280_Humidity::getEvent(sensors_event_t *event) {
+  /* Clear the event */
+  memset(event, 0, sizeof(sensors_event_t));
+
+  event->version = sizeof(sensors_event_t);
+  event->sensor_id = _sensorID;
+  event->type = SENSOR_TYPE_RELATIVE_HUMIDITY;
+  event->timestamp = millis();
+  event->relative_humidity = _theBME280->readHumidity();
   return true;
 }

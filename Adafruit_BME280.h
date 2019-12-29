@@ -135,6 +135,20 @@ private:
   Adafruit_BME280 *_theBME280 = NULL;
 };
 
+/** Adafruit Unified Sensor interface for humidity component of BME280 */
+class Adafruit_BME280_Humidity : public Adafruit_Sensor {
+public:
+  /** @brief Create an Adafruit_Sensor compatible object for the humidity sensor
+      @param parent A pointer to the BME280 class */
+  Adafruit_BME280_Humidity(Adafruit_BME280 *parent) { _theBME280 = parent; }
+  bool getEvent(sensors_event_t *);
+  void getSensor(sensor_t *);
+
+private:
+  int _sensorID = 0;
+  Adafruit_BME280 *_theBME280 = NULL;
+};
+
 /**************************************************************************/
 /*!
     @brief  Class that stores state and functions for interacting with BME280 IC
@@ -222,13 +236,15 @@ public:
 
   Adafruit_Sensor *getTemperatureSensor(void);
   Adafruit_Sensor *getPressureSensor(void);
+  Adafruit_Sensor *getHumiditySensor(void);
 
 protected:
   TwoWire *_wire; //!< pointer to a TwoWire object
   SPIClass *_spi; //!< pointer to SPI object
-  
+
   Adafruit_BME280_Temp *temp_sensor = NULL;
   Adafruit_BME280_Pressure *pressure_sensor = NULL;
+  Adafruit_BME280_Humidity *humidity_sensor = NULL;
 
   void readCoefficients(void);
   bool isReadingCalibration(void);
