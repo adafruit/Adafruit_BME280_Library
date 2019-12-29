@@ -190,13 +190,10 @@ public:
   // constructors
   Adafruit_BME280();
   Adafruit_BME280(int8_t cspin, SPIClass *theSPI = &SPI);
-      Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin,
+  Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin,
                       int8_t sckpin);
 
-  bool begin();
-  bool begin(TwoWire *theWire);
-  bool begin(uint8_t addr);
-  bool begin(uint8_t addr, TwoWire *theWire);
+  bool begin(uint8_t addr=BME280_ADDRESS, TwoWire *theWire=&Wire);
   bool init();
 
   void setSampling(sensor_mode mode = MODE_NORMAL,

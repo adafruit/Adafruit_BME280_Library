@@ -64,7 +64,7 @@ Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin,
 /*!
  *   @brief  Initialise sensor with given parameters / settings
  *   @param addr the I2C address the device can be found on
- *   @param theWire the I2C object to use
+ *   @param theWire the I2C object to use, defaults to &Wire
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
@@ -74,32 +74,6 @@ bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
   status = init();
 
   return status;
-}
-
-/*!
- *   @brief  Initialise sensor with given parameters / settings
- *   @param theWire the I2C object to use
- *   @returns true on success, false otherwise
- */
-bool Adafruit_BME280::begin(TwoWire *theWire) {
-  return begin(BME280_ADDRESS, theWire);
-}
-
-/*!
- *   @brief  Initialise sensor with given parameters / settings
- *   @param addr the I2C address the device can be found on
- *   @returns true on success, false otherwise
- */
-bool Adafruit_BME280::begin(uint8_t addr) {
-  return begin(addr, &Wire);
-}
-
-/*!
- *   @brief  Initialise sensor with given parameters / settings
- *   @returns true on success, false otherwise
- */
-bool Adafruit_BME280::begin(void) {
-  return begin(BME280_ADDRESS, &Wire);
 }
 
 /*!
@@ -135,11 +109,11 @@ bool Adafruit_BME280::init() {
   write8(BME280_REGISTER_SOFTRESET, 0xB6);
 
   // wait for chip to wake up.
-  delay(300);
+  delay(10);
 
   // if chip is still reading calibration, delay
   while (isReadingCalibration())
-    delay(100);
+    delay(10);
 
   readCoefficients(); // read trimming parameters, see DS 4.2.2
 
