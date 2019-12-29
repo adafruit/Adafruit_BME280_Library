@@ -72,14 +72,7 @@ bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
   _i2caddr = addr;
   _wire = theWire;
   status = init();
-  if ((!status) && (addr != BME280_ADDRESS)) {
-    _i2caddr = BME280_ADDRESS;
-    status = init();
-  }
-  if ((!status) && (addr != BME280_ADDRESS_ALTERNATE)) {
-    _i2caddr = BME280_ADDRESS_ALTERNATE;
-    status = init();
-  }
+
   return status;
 }
 
