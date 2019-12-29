@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['none',['none',['../struct_adafruit___b_m_e280_1_1config.html#a206d0ea9e48a05cd33259c795192cd5d',1,'Adafruit_BME280::config::none()'],['../struct_adafruit___b_m_e280_1_1ctrl__hum.html#a811e7b3c416b0ebee7989539ef221970',1,'Adafruit_BME280::ctrl_hum::none()']]]
+  ['mode',['mode',['../struct_adafruit___b_m_e280_1_1ctrl__meas.html#ae1217b5c11b75f38147f1d6d2bb9319f',1,'Adafruit_BME280::ctrl_meas']]]
 ];

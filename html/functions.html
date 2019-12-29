@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Adafruit BME280 Arduino Library: Class Members</title>
+<title>Adafruit BME280 Library: Class Members</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Adafruit BME280 Arduino Library
+   <div id="projectname">Adafruit BME280 Library
    </div>
   </td>
  </tr>
@@ -104,12 +104,21 @@ $(function() {
 <li>Adafruit_BME280()
 : <a class="el" href="class_adafruit___b_m_e280.html#a71e41080f3536bf1d2cf5ab5d8f334b4">Adafruit_BME280</a>
 </li>
+<li>Adafruit_BME280_Humidity()
+: <a class="el" href="class_adafruit___b_m_e280___humidity.html#a7848db280306dc255c2c355e5b3c1f3c">Adafruit_BME280_Humidity</a>
+</li>
+<li>Adafruit_BME280_Pressure()
+: <a class="el" href="class_adafruit___b_m_e280___pressure.html#a23a42e1654b83eebb79c95d5f6270f5b">Adafruit_BME280_Pressure</a>
+</li>
+<li>Adafruit_BME280_Temp()
+: <a class="el" href="class_adafruit___b_m_e280___temp.html#a759652e220a77c360186e5fc000c6e1a">Adafruit_BME280_Temp</a>
+</li>
 </ul>
 
 
 <h3><a id="index_b"></a>- b -</h3><ul>
 <li>begin()
-: <a class="el" href="class_adafruit___b_m_e280.html#a7c28d839643864799e9a9b21161a0f65">Adafruit_BME280</a>
+: <a class="el" href="class_adafruit___b_m_e280.html#a94f8cc82e56f44f5e75fb425d1cdf939">Adafruit_BME280</a>
 </li>
 </ul>
 
@@ -185,6 +194,32 @@ $(function() {
 , <a class="el" href="struct_adafruit___b_m_e280_1_1ctrl__hum.html#a924e975a85994079d85361253ec67ab2">Adafruit_BME280::ctrl_hum</a>
 , <a class="el" href="struct_adafruit___b_m_e280_1_1ctrl__meas.html#a004d5bf8709d7f6c78a9bc263a15c640">Adafruit_BME280::ctrl_meas</a>
 </li>
+<li>getEvent()
+: <a class="el" href="class_adafruit___b_m_e280___humidity.html#aaa8deb0f24b208be422c73fe1dff1c18">Adafruit_BME280_Humidity</a>
+, <a class="el" href="class_adafruit___b_m_e280___pressure.html#ae5b10438b67f685e6206a59e97279e73">Adafruit_BME280_Pressure</a>
+, <a class="el" href="class_adafruit___b_m_e280___temp.html#a930900ba06a06c8a86ee16c40cafa404">Adafruit_BME280_Temp</a>
+</li>
+<li>getHumiditySensor()
+: <a class="el" href="class_adafruit___b_m_e280.html#ae1c90512a947f8b953b51253d023551d">Adafruit_BME280</a>
+</li>
+<li>getPressureSensor()
+: <a class="el" href="class_adafruit___b_m_e280.html#a181ade838c305a2a27b999b76017b7ee">Adafruit_BME280</a>
+</li>
+<li>getSensor()
+: <a class="el" href="class_adafruit___b_m_e280___humidity.html#a5cc2ae7b5d1b67857665c161f17955e4">Adafruit_BME280_Humidity</a>
+, <a class="el" href="class_adafruit___b_m_e280___pressure.html#aef83fa8b2b4b7a321d2e117d02b3cdc0">Adafruit_BME280_Pressure</a>
+, <a class="el" href="class_adafruit___b_m_e280___temp.html#ab5b5fb254bc4d0f3b6bf9e9db867b1a0">Adafruit_BME280_Temp</a>
+</li>
+<li>getTemperatureSensor()
+: <a class="el" href="class_adafruit___b_m_e280.html#ac7012b53a26f3486219e75cd704c01ab">Adafruit_BME280</a>
+</li>
+</ul>
+
+
+<h3><a id="index_h"></a>- h -</h3><ul>
+<li>humidity_sensor
+: <a class="el" href="class_adafruit___b_m_e280.html#aa0a9ba73281628b4058d4a73941b4940">Adafruit_BME280</a>
+</li>
 </ul>
 
 
@@ -222,6 +257,13 @@ $(function() {
 </li>
 <li>osrs_t
 : <a class="el" href="struct_adafruit___b_m_e280_1_1ctrl__meas.html#a2efa486fe672d323df291c609126537d">Adafruit_BME280::ctrl_meas</a>
+</li>
+</ul>
+
+
+<h3><a id="index_p"></a>- p -</h3><ul>
+<li>pressure_sensor
+: <a class="el" href="class_adafruit___b_m_e280.html#ad1d569a21fd68340fa4f8018079eb54d">Adafruit_BME280</a>
 </li>
 </ul>
 
@@ -303,6 +345,9 @@ $(function() {
 </li>
 <li>takeForcedMeasurement()
 : <a class="el" href="class_adafruit___b_m_e280.html#ab2e33adc3154e5ff422bea32b324dba0">Adafruit_BME280</a>
+</li>
+<li>temp_sensor
+: <a class="el" href="class_adafruit___b_m_e280.html#a9ef0aa2e70fc9afb3628ad8ca6a2796d">Adafruit_BME280</a>
 </li>
 </ul>
 
