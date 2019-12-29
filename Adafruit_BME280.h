@@ -131,7 +131,7 @@ public:
   void getSensor(sensor_t *);
 
 private:
-  int _sensorID = 0;
+  int _sensorID = 280;
   Adafruit_BME280 *_theBME280 = NULL;
 };
 
@@ -145,7 +145,7 @@ public:
   void getSensor(sensor_t *);
 
 private:
-  int _sensorID = 0;
+  int _sensorID = 280;
   Adafruit_BME280 *_theBME280 = NULL;
 };
 
@@ -214,7 +214,7 @@ public:
   Adafruit_BME280();
   Adafruit_BME280(int8_t cspin, SPIClass *theSPI = &SPI);
   Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
-
+  ~Adafruit_BME280(void);
   bool begin(uint8_t addr = BME280_ADDRESS, TwoWire *theWire = &Wire);
   bool init();
 
@@ -242,8 +242,11 @@ protected:
   TwoWire *_wire; //!< pointer to a TwoWire object
   SPIClass *_spi; //!< pointer to SPI object
 
+  //!< Adafruit_Sensor compat temperature sensor component
   Adafruit_BME280_Temp *temp_sensor = NULL;
+  //!< Adafruit_Sensor compat pressure sensor component
   Adafruit_BME280_Pressure *pressure_sensor = NULL;
+  //!< Adafruit_Sensor compat humidity sensor component
   Adafruit_BME280_Humidity *humidity_sensor = NULL;
 
   void readCoefficients(void);

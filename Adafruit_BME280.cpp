@@ -61,6 +61,21 @@ Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin,
                                  int8_t sckpin)
     : _cs(cspin), _mosi(mosipin), _miso(misopin), _sck(sckpin) {}
 
+
+
+Adafruit_BME280::~Adafruit_BME280(void) {
+  if (temp_sensor) {
+    delete temp_sensor;
+  }
+  if (pressure_sensor) {
+    delete pressure_sensor;
+  }
+  if (humidity_sensor) {
+    delete humidity_sensor;
+  }
+}
+
+
 /*!
  *   @brief  Initialise sensor with given parameters / settings
  *   @param addr the I2C address the device can be found on
@@ -533,6 +548,10 @@ uint32_t Adafruit_BME280::sensorID(void) { return _sensorID; }
     @return Adafruit_Sensor pointer to temperature sensor
  */
 Adafruit_Sensor *Adafruit_BME280::getTemperatureSensor(void) {
+  if (! temp_sensor) {
+    temp_sensor = new Adafruit_BME280_Temp(this);
+  }
+
   return temp_sensor;
 }
 
@@ -542,6 +561,9 @@ Adafruit_Sensor *Adafruit_BME280::getTemperatureSensor(void) {
     @return Adafruit_Sensor pointer to pressure sensor
  */
 Adafruit_Sensor *Adafruit_BME280::getPressureSensor(void) {
+  if (! pressure_sensor) {
+    pressure_sensor = new Adafruit_BME280_Pressure(this);
+  }
   return pressure_sensor;
 }
 
@@ -551,6 +573,9 @@ Adafruit_Sensor *Adafruit_BME280::getPressureSensor(void) {
     @return Adafruit_Sensor pointer to humidity sensor
  */
 Adafruit_Sensor *Adafruit_BME280::getHumiditySensor(void) {
+  if (! humidity_sensor) {
+    humidity_sensor = new Adafruit_BME280_Humidity(this);
+  }
   return humidity_sensor;
 }
 
@@ -570,8 +595,8 @@ void Adafruit_BME280_Temp::getSensor(sensor_t *sensor) {
   sensor->sensor_id = _sensorID;
   sensor->type = SENSOR_TYPE_AMBIENT_TEMPERATURE;
   sensor->min_delay = 0;
-  sensor->max_value = -40.0; /* Temperature range -40 ~ +85 C  */
-  sensor->min_value = +85.0;
+  sensor->min_value = -40.0; /* Temperature range -40 ~ +85 C  */
+  sensor->max_value = +85.0;
   sensor->resolution = 0.01; /*  0.01 C */
 }
 
@@ -610,8 +635,8 @@ void Adafruit_BME280_Pressure::getSensor(sensor_t *sensor) {
   sensor->sensor_id = _sensorID;
   sensor->type = SENSOR_TYPE_PRESSURE;
   sensor->min_delay = 0;
-  sensor->max_value = 300.0; /* 300 ~ 1100 hPa  */
-  sensor->min_value = 1100.0;
+  sensor->min_value = 300.0; /* 300 ~ 1100 hPa  */
+  sensor->max_value = 1100.0;
   sensor->resolution = 0.012; /* 0.12 hPa relative */
 }
 
