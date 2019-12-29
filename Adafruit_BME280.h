@@ -76,33 +76,6 @@ enum {
   BME280_REGISTER_HUMIDDATA = 0xFD
 };
 
-/**************************************************************************/
-/*!
-    @brief  calibration data
-*/
-/**************************************************************************/
-typedef struct {
-  uint16_t dig_T1; ///< temperature compensation value
-  int16_t dig_T2;  ///< temperature compensation value
-  int16_t dig_T3;  ///< temperature compensation value
-
-  uint16_t dig_P1; ///< pressure compensation value
-  int16_t dig_P2;  ///< pressure compensation value
-  int16_t dig_P3;  ///< pressure compensation value
-  int16_t dig_P4;  ///< pressure compensation value
-  int16_t dig_P5;  ///< pressure compensation value
-  int16_t dig_P6;  ///< pressure compensation value
-  int16_t dig_P7;  ///< pressure compensation value
-  int16_t dig_P8;  ///< pressure compensation value
-  int16_t dig_P9;  ///< pressure compensation value
-
-  uint8_t dig_H1; ///< humidity compensation value
-  int16_t dig_H2; ///< humidity compensation value
-  uint8_t dig_H3; ///< humidity compensation value
-  int16_t dig_H4; ///< humidity compensation value
-  int16_t dig_H5; ///< humidity compensation value
-  int8_t dig_H6;  ///< humidity compensation value
-} bme280_calib_data;
 /*=========================================================================*/
 
 /*
@@ -223,22 +196,40 @@ protected:
   uint8_t read8(byte reg);
   uint16_t read16(byte reg);
   uint32_t read24(byte reg);
-  int16_t readS16(byte reg);
   uint16_t read16_LE(byte reg); // little endian
   int16_t readS16_LE(byte reg); // little endian
 
-  uint8_t _i2caddr;  //!< I2C addr for the TwoWire interface
   int32_t _sensorID; //!< ID of the BME Sensor
   int32_t t_fine; //!< temperature with high resolution, stored as an attribute
                   //!< as this is used for temperature compensation reading
                   //!< humidity and pressure
-
   int8_t _cs;   //!< for the SPI interface
   int8_t _mosi; //!< for the SPI interface
   int8_t _miso; //!< for the SPI interface
   int8_t _sck;  //!< for the SPI interface
 
-  bme280_calib_data _bme280_calib; //!< here calibration data is stored
+  uint16_t dig_T1; ///< temperature compensation value
+  int16_t dig_T2;  ///< temperature compensation value
+  int16_t dig_T3;  ///< temperature compensation value
+
+  uint16_t dig_P1; ///< pressure compensation value
+  int16_t dig_P2;  ///< pressure compensation value
+  int16_t dig_P3;  ///< pressure compensation value
+  int16_t dig_P4;  ///< pressure compensation value
+  int16_t dig_P5;  ///< pressure compensation value
+  int16_t dig_P6;  ///< pressure compensation value
+  int16_t dig_P7;  ///< pressure compensation value
+  int16_t dig_P8;  ///< pressure compensation value
+  int16_t dig_P9;  ///< pressure compensation value
+
+  int16_t dig_H2; ///< humidity compensation value
+  int16_t dig_H4; ///< humidity compensation value
+  int16_t dig_H5; ///< humidity compensation value
+  uint8_t dig_H1; ///< humidity compensation value
+  uint8_t dig_H3; ///< humidity compensation value
+  int8_t dig_H6;  ///< humidity compensation value
+
+  uint8_t _i2caddr;  //!< I2C addr for the TwoWire interface
 
   /**************************************************************************/
   /*!
@@ -255,7 +246,7 @@ protected:
     // 101 = 1000 ms
     // 110 = 10 ms
     // 111 = 20 ms
-    unsigned int t_sb : 3; ///< inactive duration (standby time) in normal mode
+    uint8_t t_sb : 3; ///< inactive duration (standby time) in normal mode
 
     // filter settings
     // 000 = filter off
@@ -263,14 +254,14 @@ protected:
     // 010 = 4x filter
     // 011 = 8x filter
     // 100 and above = 16x filter
-    unsigned int filter : 3; ///< filter settings
+    uint8_t filter : 3; ///< filter settings
 
     // unused - don't set
-    unsigned int none : 1;     ///< unused - don't set
-    unsigned int spi3w_en : 1; ///< unused - don't set
+    uint8_t none : 1;     ///< unused - don't set
+    uint8_t spi3w_en : 1; ///< unused - don't set
 
     /// @return combined config register
-    unsigned int get() { return (t_sb << 5) | (filter << 2) | spi3w_en; }
+    uint8_t get() { return (t_sb << 5) | (filter << 2) | spi3w_en; }
   };
   config _configReg; //!< config register object
 
@@ -287,7 +278,7 @@ protected:
     // 011 = x4
     // 100 = x8
     // 101 and above = x16
-    unsigned int osrs_t : 3; ///< temperature oversampling
+    uint8_t osrs_t : 3; ///< temperature oversampling
 
     // pressure oversampling
     // 000 = skipped
@@ -296,16 +287,16 @@ protected:
     // 011 = x4
     // 100 = x8
     // 101 and above = x16
-    unsigned int osrs_p : 3; ///< pressure oversampling
+    uint8_t osrs_p : 3; ///< pressure oversampling
 
     // device mode
     // 00       = sleep
     // 01 or 10 = forced
     // 11       = normal
-    unsigned int mode : 2; ///< device mode
+    uint8_t mode : 2; ///< device mode
 
     /// @return combined ctrl register
-    unsigned int get() { return (osrs_t << 5) | (osrs_p << 2) | mode; }
+    uint8_t get() { return (osrs_t << 5) | (osrs_p << 2) | mode; }
   };
   ctrl_meas _measReg; //!< measurement register object
 
@@ -316,7 +307,7 @@ protected:
   /**************************************************************************/
   struct ctrl_hum {
     /// unused - don't set
-    unsigned int none : 5;
+    uint8_t none : 5;
 
     // pressure oversampling
     // 000 = skipped
@@ -325,10 +316,10 @@ protected:
     // 011 = x4
     // 100 = x8
     // 101 and above = x16
-    unsigned int osrs_h : 3; ///< pressure oversampling
+    uint8_t osrs_h : 3; ///< pressure oversampling
 
     /// @return combined ctrl hum register
-    unsigned int get() { return (osrs_h); }
+    uint8_t get() { return (osrs_h); }
   };
   ctrl_hum _humReg; //!< hum register object
 };
