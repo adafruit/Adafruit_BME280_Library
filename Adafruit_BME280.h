@@ -242,12 +242,14 @@ protected:
   TwoWire *_wire; //!< pointer to a TwoWire object
   SPIClass *_spi; //!< pointer to SPI object
 
-  //!< Adafruit_Sensor compat temperature sensor component
   Adafruit_BME280_Temp *temp_sensor = NULL;
-  //!< Adafruit_Sensor compat pressure sensor component
+  //!< Adafruit_Sensor compat temperature sensor component
+
   Adafruit_BME280_Pressure *pressure_sensor = NULL;
-  //!< Adafruit_Sensor compat humidity sensor component
+  //!< Adafruit_Sensor compat pressure sensor component
+
   Adafruit_BME280_Humidity *humidity_sensor = NULL;
+  //!< Adafruit_Sensor compat humidity sensor component
 
   void readCoefficients(void);
   bool isReadingCalibration(void);
