@@ -351,6 +351,7 @@ void Adafruit_BME280::takeForcedMeasurement() {
   // In normal mode simply does new measurements periodically.
   if (_measReg.mode == MODE_FORCED) {
     // set to forced mode, i.e. "take next measurement"
+    write8(BME280_REGISTER_CONTROLHUMID, _humReg.get());
     write8(BME280_REGISTER_CONTROL, _measReg.get());
     // wait until measurement has been completed, otherwise we would read
     // the values from the last measurement
