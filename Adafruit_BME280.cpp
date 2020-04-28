@@ -439,17 +439,19 @@ float Adafruit_BME280::readPressure(void) {
   var2 = var1 * var1 * (int64_t)_bme280_calib.dig_P6;
   var2 = var2 + ((var1 * (int64_t)_bme280_calib.dig_P5) * 131072);
   var2 = var2 + (((int64_t)_bme280_calib.dig_P4) * 34359738368);
-  var1 = ((var1 * var1 * (int64_t)_bme280_calib.dig_P3) / 256) + ((var1 * ((int64_t)_bme280_calib.dig_P2) * 4096));
+  var1 = ((var1 * var1 * (int64_t)_bme280_calib.dig_P3) / 256) +
+         ((var1 * ((int64_t)_bme280_calib.dig_P2) * 4096));
   var3 = ((int64_t)1) * 140737488355328;
   var1 = (var3 + var1) * ((int64_t)_bme280_calib.dig_P1) / 8589934592;
 
   if (var1 == 0) {
-      return 0; // avoid exception caused by division by zero
+    return 0; // avoid exception caused by division by zero
   }
 
   var4 = 1048576 - adc_P;
   var4 = (((var4 * 2147483648) - var2) * 3125) / var1;
-  var1 = (((int64_t)_bme280_calib.dig_P9) * (var4 / 8192) * (var4 / 8192)) / 33554432;
+  var1 = (((int64_t)_bme280_calib.dig_P9) * (var4 / 8192) * (var4 / 8192)) /
+         33554432;
   var2 = (((int64_t)_bme280_calib.dig_P8) * var4) / 524288;
   var4 = ((var4 + var1 + var2) / 256) + (((int64_t)_bme280_calib.dig_P7) * 16);
 
@@ -487,9 +489,8 @@ float Adafruit_BME280::readHumidity(void) {
   var5 = (var5 > 419430400 ? 419430400 : var5);
   uint32_t H = (uint32_t)(var5 / 4096);
 
-  return  (float)H / 1024.0;
+  return (float)H / 1024.0;
 }
-
 
 /*!
  *   Calculates the altitude (in meters) from the specified atmospheric
