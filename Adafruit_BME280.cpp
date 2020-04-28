@@ -471,7 +471,7 @@ float Adafruit_BME280::readHumidity(void) {
   if (adc_H == 0x8000) // value in case humidity measurement was disabled
     return NAN;
 
-  var1 = calib_data->t_fine - ((int32_t)76800);
+  var1 = t_fine - ((int32_t)76800);
   var2 = (int32_t)(adc_H * 16384);
   var3 = (int32_t)(((int32_t)_bme280_calib.dig_H4) * 1048576);
   var4 = ((int32_t)_bme280_calib.dig_H5) * var1;
