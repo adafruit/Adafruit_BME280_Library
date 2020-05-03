@@ -455,9 +455,9 @@ float Adafruit_BME280::readPressure(void) {
   var2 = (((int64_t)_bme280_calib.dig_P8) * var4) / 524288;
   var4 = ((var4 + var1 + var2) / 256) + (((int64_t)_bme280_calib.dig_P7) * 16);
 
-  uint32_t P = (uint32_t)(((var4 / 2) * 100) / 128);
+  float P = var4 / 256.0;
 
-  return (float)P / 256;
+  return P;
 }
 
 /*!
