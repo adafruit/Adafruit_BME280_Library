@@ -30,7 +30,7 @@
 /*!
  *  @brief  default I2C address
  */
-#define BME280_ADDRESS (0x77)           // Primary I2C Address
+#define BME280_ADDRESS (0x76)           // Primary I2C Address
                                         /*!
                                          *  @brief  alternate I2C address
                                          */
