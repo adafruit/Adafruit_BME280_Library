@@ -261,13 +261,17 @@ uint16_t Adafruit_BME280::read16(byte reg) {
     _wire->write((uint8_t)reg);
     _wire->endTransmission();
     _wire->requestFrom((uint8_t)_i2caddr, (byte)2);
-    value = (_wire->read() << 8) | _wire->read();
+    value = _wire->read();
+    value <<= 8;
+    value |= _wire->read();
   } else {
     if (_sck == -1)
       _spi->beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0));
     digitalWrite(_cs, LOW);
     spixfer(reg | 0x80); // read, bit 7 high
-    value = (spixfer(0) << 8) | spixfer(0);
+    value = spixfer(0);
+    value <<= 8;
+    value |= spixfer(0);
     digitalWrite(_cs, HIGH);
     if (_sck == -1)
       _spi->endTransaction(); // release the SPI bus
