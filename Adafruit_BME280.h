@@ -277,8 +277,8 @@ protected:
   int8_t _miso; //!< for the SPI interface
   int8_t _sck;  //!< for the SPI interface
 
-  int32_t t_fine_adjust; //!< add to compensate temp readings and in turn to
-                         //!< pressure and humidity readings
+  int32_t t_fine_adjust = 0; //!< add to compensate temp readings and in turn
+                             //!< to pressure and humidity readings
 
   bme280_calib_data _bme280_calib; //!< here calibration data is stored
 
