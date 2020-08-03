@@ -234,8 +234,8 @@ public:
   float seaLevelForAltitude(float altitude, float pressure);
   uint32_t sensorID(void);
 
-  float getTemperatureAdjustment(void);
-  void setTemperatureAdjustment(float);
+  float getTemperatureCompensation(void);
+  void setTemperatureCompensation(float);
 
   Adafruit_Sensor *getTemperatureSensor(void);
   Adafruit_Sensor *getPressureSensor(void);

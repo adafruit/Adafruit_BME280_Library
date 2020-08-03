@@ -544,7 +544,7 @@ uint32_t Adafruit_BME280::sensorID(void) { return _sensorID; }
  *   Returns the current temperature compensation value in degrees Celcius
  *   @returns the current temperature compensation value in degrees Celcius
  */
-float Adafruit_BME280::getTemperatureAdjustment(void) {
+float Adafruit_BME280::getTemperatureCompensation(void) {
   return float(((t_fine_adjust*5)>>8)/100);
 };
 
@@ -553,7 +553,7 @@ float Adafruit_BME280::getTemperatureAdjustment(void) {
  *  temperature is used in pressure and humidity readings.
  *  @params  adjustment  Value to be added to each tempature reading in Celcius
  */
-void Adafruit_BME280::setTemperatureAdjustment(float adjustment) {
+void Adafruit_BME280::setTemperatureCompensation(float adjustment) {
   // convert the value in C into and adjustment to t_fine
   t_fine_adjust = ((int32_t(adjustment * 100) << 8)) / 5;
 };
