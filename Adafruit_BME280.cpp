@@ -551,7 +551,7 @@ float Adafruit_BME280::getTemperatureCompensation(void) {
 /*!
  *  Sets a value to be added to each temperature reading. This adjusted
  *  temperature is used in pressure and humidity readings.
- *  @params  adjustment  Value to be added to each tempature reading in Celcius
+ *  @param  adjustment  Value to be added to each tempature reading in Celcius
  */
 void Adafruit_BME280::setTemperatureCompensation(float adjustment) {
   // convert the value in C into and adjustment to t_fine
