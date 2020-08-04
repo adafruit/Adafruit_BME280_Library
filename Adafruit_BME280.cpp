@@ -419,7 +419,7 @@ float Adafruit_BME280::readTemperature(void) {
           ((int32_t)_bme280_calib.dig_T3)) >>
          14;
 
-  t_fine = var1 + var2;
+  t_fine = var1 + var2 + t_fine_adjust;
 
   float T = (t_fine * 5 + 128) >> 8;
   return T / 100;
@@ -539,6 +539,24 @@ float Adafruit_BME280::seaLevelForAltitude(float altitude, float atmospheric) {
  *   @returns Sensor ID 0x60 for BME280, 0x56, 0x57, 0x58 BMP280
  */
 uint32_t Adafruit_BME280::sensorID(void) { return _sensorID; }
+
+/*!
+ *   Returns the current temperature compensation value in degrees Celcius
+ *   @returns the current temperature compensation value in degrees Celcius
+ */
+float Adafruit_BME280::getTemperatureCompensation(void) {
+  return float(((t_fine_adjust * 5) >> 8) / 100);
+};
+
+/*!
+ *  Sets a value to be added to each temperature reading. This adjusted
+ *  temperature is used in pressure and humidity readings.
+ *  @param  adjustment  Value to be added to each tempature reading in Celcius
+ */
+void Adafruit_BME280::setTemperatureCompensation(float adjustment) {
+  // convert the value in C into and adjustment to t_fine
+  t_fine_adjust = ((int32_t(adjustment * 100) << 8)) / 5;
+};
 
 /*!
     @brief  Gets an Adafruit Unified Sensor object for the temp sensor component
