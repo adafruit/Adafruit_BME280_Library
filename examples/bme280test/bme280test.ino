@@ -87,4 +87,9 @@ void printValues() {
     Serial.println(" %");
 
     Serial.println();
+  
+    if(isnan(bme.readTemperature())){ //if sensor gets disconnected
+      bme.begin();
+      Serial.print("\n Reinitialise Sensor \n");
+    }
 }
