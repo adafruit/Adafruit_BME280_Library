@@ -361,7 +361,7 @@ bool Adafruit_BME280::takeForcedMeasurement(void) {
     // the values from the last measurement or the timeout occurred after 2 sec.
     while (read8(BME280_REGISTER_STATUS) & 0x08) {
       // In case of a timeout, stop the while loop
-      if((millis() - timeout_start) > 2000) {
+      if ((millis() - timeout_start) > 2000) {
         return_value = false;
         break;
       }
