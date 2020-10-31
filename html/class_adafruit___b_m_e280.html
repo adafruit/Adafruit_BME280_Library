@@ -154,10 +154,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4f8fb1e501c1550785298d9392dd0fcb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a4f8fb1e501c1550785298d9392dd0fcb">setSampling</a> (<a class="el" href="class_adafruit___b_m_e280.html#a8c3da58d6b877cdb6233324367e64248">sensor_mode</a> mode=MODE_NORMAL, <a class="el" href="class_adafruit___b_m_e280.html#a01725932e3b27fc4cf6118d2d0c60051">sensor_sampling</a> tempSampling=SAMPLING_X16, <a class="el" href="class_adafruit___b_m_e280.html#a01725932e3b27fc4cf6118d2d0c60051">sensor_sampling</a> pressSampling=SAMPLING_X16, <a class="el" href="class_adafruit___b_m_e280.html#a01725932e3b27fc4cf6118d2d0c60051">sensor_sampling</a> humSampling=SAMPLING_X16, <a class="el" href="class_adafruit___b_m_e280.html#ae85693cb70d7ab593bd916eebeba684f">sensor_filter</a> filter=FILTER_OFF, <a class="el" href="class_adafruit___b_m_e280.html#a23ae0010eff7a8d3bfa6bb73d88295b9">standby_duration</a> duration=STANDBY_MS_0_5)</td></tr>
 <tr class="memdesc:a4f8fb1e501c1550785298d9392dd0fcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">setup sensor with given parameters / settings  <a href="#a4f8fb1e501c1550785298d9392dd0fcb">More...</a><br /></td></tr>
 <tr class="separator:a4f8fb1e501c1550785298d9392dd0fcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2e33adc3154e5ff422bea32b324dba0"><td class="memItemLeft" align="right" valign="top"><a id="ab2e33adc3154e5ff422bea32b324dba0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#ab2e33adc3154e5ff422bea32b324dba0">takeForcedMeasurement</a> ()</td></tr>
-<tr class="memdesc:ab2e33adc3154e5ff422bea32b324dba0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Take a new measurement (only possible in forced mode) <br /></td></tr>
-<tr class="separator:ab2e33adc3154e5ff422bea32b324dba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c4bbbcab833ce1a08d8de2d6acea308"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a4c4bbbcab833ce1a08d8de2d6acea308">takeForcedMeasurement</a> (void)</td></tr>
+<tr class="memdesc:a4c4bbbcab833ce1a08d8de2d6acea308"><td class="mdescLeft">&#160;</td><td class="mdescRight">Take a new measurement (only possible in forced mode)  <a href="#a4c4bbbcab833ce1a08d8de2d6acea308">More...</a><br /></td></tr>
+<tr class="separator:a4c4bbbcab833ce1a08d8de2d6acea308"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27bed14df5eda7371449db6d76eed115"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e280.html#a27bed14df5eda7371449db6d76eed115">readTemperature</a> (void)</td></tr>
 <tr class="memdesc:a27bed14df5eda7371449db6d76eed115"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the temperature from the sensor.  <a href="#a27bed14df5eda7371449db6d76eed115">More...</a><br /></td></tr>
 <tr class="separator:a27bed14df5eda7371449db6d76eed115"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -500,6 +499,27 @@ int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a4c4bbbcab833ce1a08d8de2d6acea308"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c4bbbcab833ce1a08d8de2d6acea308">&#9670;&nbsp;</a></span>takeForcedMeasurement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Adafruit_BME280::takeForcedMeasurement </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Take a new measurement (only possible in forced mode) </p>
+<dl class="section return"><dt>Returns</dt><dd>true in case of success else false </dd></dl>
 
 </div>
 </div>
