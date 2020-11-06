@@ -1,0 +1,27 @@
+{
+    "name": "Adafruit BME280 Library",
+    "version": "2.1.2",
+    "keywords": ["sensors"],
+    "description": "Arduino library for BME280 humidity and pressure sensors.",
+    "frameworks": ["arduino"],
+    "platforms": "*",
+    "authors": [
+        {
+            "email": "info@adafruit.com",
+            "url": null,
+            "maintainer": true,
+            "name": "Adafruit"
+        }
+    ],
+    "dependencies": [
+        {
+            "name": "Adafruit Unified Sensor"
+        },
+        {
+            "name": "SPI"
+        },
+        {
+            "name": "Wire"
+        }
+    ]
+}
