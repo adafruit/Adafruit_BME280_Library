@@ -42,7 +42,8 @@ void setup() {
     unsigned status;
     
     // default settings
-    status = bme.begin();  
+    status = bme.begin(0x76); // I2C
+    // status = bme.begin(); // SPI
     // You can also pass in a Wire library object like &Wire2
     // status = bme.begin(0x76, &Wire2)
     if (!status) {
