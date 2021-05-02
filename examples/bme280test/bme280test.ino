@@ -71,7 +71,7 @@ void loop() {
 void printValues() {
     Serial.print("Temperature = ");
     Serial.print(bme.readTemperature());
-    Serial.println(" *C");
+    Serial.println(" °C");
 
     Serial.print("Pressure = ");
 
