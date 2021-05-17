@@ -557,7 +557,7 @@ uint32_t Adafruit_BME280::sensorID(void) { return _sensorID; }
  *   @returns the current temperature compensation value in degrees Celcius
  */
 float Adafruit_BME280::getTemperatureCompensation(void) {
-  return float(((t_fine_adjust * 5) >> 8) / 100);
+  return float((t_fine_adjust * 5) >> 8) / 100.0;
 };
 
 /*!
