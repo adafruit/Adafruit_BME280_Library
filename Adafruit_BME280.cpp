@@ -161,6 +161,7 @@ void Adafruit_BME280::setSampling(sensor_mode mode,
   _humReg.osrs_h = humSampling;
   _configReg.filter = filter;
   _configReg.t_sb = duration;
+  _configReg.spi3w_en = 0;
 
   // making sure sensor is in sleep mode before setting configuration
   // as it otherwise may be ignored
