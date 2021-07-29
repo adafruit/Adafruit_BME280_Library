@@ -421,20 +421,16 @@ float Adafruit_BME280::readTemperature(void) {
     return NAN;
   adc_T >>= 4;
 
-  var1 = ((((adc_T >> 3) - ((int32_t)_bme280_calib.dig_T1 << 1))) *
-          ((int32_t)_bme280_calib.dig_T2)) >>
-         11;
-
-  var2 = (((((adc_T >> 4) - ((int32_t)_bme280_calib.dig_T1)) *
-            ((adc_T >> 4) - ((int32_t)_bme280_calib.dig_T1))) >>
-           12) *
-          ((int32_t)_bme280_calib.dig_T3)) >>
-         14;
+  var1 = (int32_t)((adc_T / 8) - ((int32_t)_bme280_calib.dig_T1 * 2));
+  var1 = (var1 * ((int32_t)_bme280_calib.dig_T2)) / 2048;
+  var2 = (int32_t)((adc_T / 16) - ((int32_t)_bme280_calib.dig_T1));
+  var2 = (((var2 * var2) / 4096) * ((int32_t)_bme280_calib.dig_T3)) / 16384;
 
   t_fine = var1 + var2 + t_fine_adjust;
 
-  float T = (t_fine * 5 + 128) >> 8;
-  return T / 100;
+  int32_t T = (t_fine * 5 + 128) / 256;
+
+  return (float)T / 100;
 }
 
 /*!
@@ -442,7 +438,7 @@ float Adafruit_BME280::readTemperature(void) {
  *   @returns the pressure value (in Pascal) read from the device
  */
 float Adafruit_BME280::readPressure(void) {
-  int64_t var1, var2, p;
+  int64_t var1, var2, var3, var4;
 
   readTemperature(); // must be done first to get t_fine
 
@@ -453,23 +449,27 @@ float Adafruit_BME280::readPressure(void) {
 
   var1 = ((int64_t)t_fine) - 128000;
   var2 = var1 * var1 * (int64_t)_bme280_calib.dig_P6;
-  var2 = var2 + ((var1 * (int64_t)_bme280_calib.dig_P5) << 17);
-  var2 = var2 + (((int64_t)_bme280_calib.dig_P4) << 35);
-  var1 = ((var1 * var1 * (int64_t)_bme280_calib.dig_P3) >> 8) +
-         ((var1 * (int64_t)_bme280_calib.dig_P2) << 12);
-  var1 =
-      (((((int64_t)1) << 47) + var1)) * ((int64_t)_bme280_calib.dig_P1) >> 33;
+  var2 = var2 + ((var1 * (int64_t)_bme280_calib.dig_P5) * 131072);
+  var2 = var2 + (((int64_t)_bme280_calib.dig_P4) * 34359738368);
+  var1 = ((var1 * var1 * (int64_t)_bme280_calib.dig_P3) / 256) +
+         ((var1 * ((int64_t)_bme280_calib.dig_P2) * 4096));
+  var3 = ((int64_t)1) * 140737488355328;
+  var1 = (var3 + var1) * ((int64_t)_bme280_calib.dig_P1) / 8589934592;
 
   if (var1 == 0) {
     return 0; // avoid exception caused by division by zero
   }
-  p = 1048576 - adc_P;
-  p = (((p << 31) - var2) * 3125) / var1;
-  var1 = (((int64_t)_bme280_calib.dig_P9) * (p >> 13) * (p >> 13)) >> 25;
-  var2 = (((int64_t)_bme280_calib.dig_P8) * p) >> 19;
 
-  p = ((p + var1 + var2) >> 8) + (((int64_t)_bme280_calib.dig_P7) << 4);
-  return (float)p / 256;
+  var4 = 1048576 - adc_P;
+  var4 = (((var4 * 2147483648) - var2) * 3125) / var1;
+  var1 = (((int64_t)_bme280_calib.dig_P9) * (var4 / 8192) * (var4 / 8192)) /
+         33554432;
+  var2 = (((int64_t)_bme280_calib.dig_P8) * var4) / 524288;
+  var4 = ((var4 + var1 + var2) / 256) + (((int64_t)_bme280_calib.dig_P7) * 16);
+
+  float P = var4 / 256.0;
+
+  return P;
 }
 
 /*!
@@ -477,37 +477,31 @@ float Adafruit_BME280::readPressure(void) {
  *  @returns the humidity value read from the device
  */
 float Adafruit_BME280::readHumidity(void) {
+  int32_t var1, var2, var3, var4, var5;
+
   readTemperature(); // must be done first to get t_fine
 
   int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
   if (adc_H == 0x8000) // value in case humidity measurement was disabled
     return NAN;
 
-  int32_t v_x1_u32r;
+  var1 = t_fine - ((int32_t)76800);
+  var2 = (int32_t)(adc_H * 16384);
+  var3 = (int32_t)(((int32_t)_bme280_calib.dig_H4) * 1048576);
+  var4 = ((int32_t)_bme280_calib.dig_H5) * var1;
+  var5 = (((var2 - var3) - var4) + (int32_t)16384) / 32768;
+  var2 = (var1 * ((int32_t)_bme280_calib.dig_H6)) / 1024;
+  var3 = (var1 * ((int32_t)_bme280_calib.dig_H3)) / 2048;
+  var4 = ((var2 * (var3 + (int32_t)32768)) / 1024) + (int32_t)2097152;
+  var2 = ((var4 * ((int32_t)_bme280_calib.dig_H2)) + 8192) / 16384;
+  var3 = var5 * var2;
+  var4 = ((var3 / 32768) * (var3 / 32768)) / 128;
+  var5 = var3 - ((var4 * ((int32_t)_bme280_calib.dig_H1)) / 16);
+  var5 = (var5 < 0 ? 0 : var5);
+  var5 = (var5 > 419430400 ? 419430400 : var5);
+  uint32_t H = (uint32_t)(var5 / 4096);
 
-  v_x1_u32r = (t_fine - ((int32_t)76800));
-
-  v_x1_u32r = (((((adc_H << 14) - (((int32_t)_bme280_calib.dig_H4) << 20) -
-                  (((int32_t)_bme280_calib.dig_H5) * v_x1_u32r)) +
-                 ((int32_t)16384)) >>
-                15) *
-               (((((((v_x1_u32r * ((int32_t)_bme280_calib.dig_H6)) >> 10) *
-                    (((v_x1_u32r * ((int32_t)_bme280_calib.dig_H3)) >> 11) +
-                     ((int32_t)32768))) >>
-                   10) +
-                  ((int32_t)2097152)) *
-                     ((int32_t)_bme280_calib.dig_H2) +
-                 8192) >>
-                14));
-
-  v_x1_u32r = (v_x1_u32r - (((((v_x1_u32r >> 15) * (v_x1_u32r >> 15)) >> 7) *
-                             ((int32_t)_bme280_calib.dig_H1)) >>
-                            4));
-
-  v_x1_u32r = (v_x1_u32r < 0) ? 0 : v_x1_u32r;
-  v_x1_u32r = (v_x1_u32r > 419430400) ? 419430400 : v_x1_u32r;
-  float h = (v_x1_u32r >> 12);
-  return h / 1024.0;
+  return (float)H / 1024.0;
 }
 
 /*!
