@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mode',['mode',['../struct_adafruit___b_m_e280_1_1ctrl__meas.html#ae1217b5c11b75f38147f1d6d2bb9319f',1,'Adafruit_BME280::ctrl_meas']]]
+  ['i2c_5fdev',['i2c_dev',['../class_adafruit___b_m_e280.html#a74de00c01a97aa74dec8ad17a7a40e4c',1,'Adafruit_BME280']]]
 ];
