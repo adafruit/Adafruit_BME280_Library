@@ -60,6 +60,12 @@ Adafruit_BME280::Adafruit_BME280(int8_t cspin, int8_t mosipin, int8_t misopin,
 }
 
 Adafruit_BME280::~Adafruit_BME280(void) {
+  if (spi_dev) {
+    delete spi_dev;
+  }
+  if (i2c_dev) {
+    delete i2c_dev;
+  }
   if (temp_sensor) {
     delete temp_sensor;
   }
@@ -79,10 +85,14 @@ Adafruit_BME280::~Adafruit_BME280(void) {
  */
 bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
   if (spi_dev == NULL) {
+    // I2C mode
+    if (i2c_dev)
+      delete i2c_dev;
     i2c_dev = new Adafruit_I2CDevice(addr, theWire);
     if (!i2c_dev->begin())
       return false;
   } else {
+    // SPI mode
     if (!spi_dev->begin())
       return false;
   }
