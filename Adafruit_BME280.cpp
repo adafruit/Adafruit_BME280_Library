@@ -472,8 +472,8 @@ float Adafruit_BME280::seaLevelForAltitude(float altitude, float atmospheric) {
 uint32_t Adafruit_BME280::sensorID(void) { return _sensorID; }
 
 /*!
- *   Returns the current temperature compensation value in degrees Celcius
- *   @returns the current temperature compensation value in degrees Celcius
+ *   Returns the current temperature compensation value in degrees Celsius
+ *   @returns the current temperature compensation value in degrees Celsius
  */
 float Adafruit_BME280::getTemperatureCompensation(void) {
   return float((t_fine_adjust * 5) >> 8) / 100.0;
@@ -482,7 +482,7 @@ float Adafruit_BME280::getTemperatureCompensation(void) {
 /*!
  *  Sets a value to be added to each temperature reading. This adjusted
  *  temperature is used in pressure and humidity readings.
- *  @param  adjustment  Value to be added to each tempature reading in Celcius
+ *  @param  adjustment  Value to be added to each temperature reading in Celsius
  */
 void Adafruit_BME280::setTemperatureCompensation(float adjustment) {
   // convert the value in C into and adjustment to t_fine
