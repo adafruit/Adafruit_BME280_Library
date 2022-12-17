@@ -229,6 +229,8 @@ public:
   float readTemperature(void);
   float readPressure(void);
   float readHumidity(void);
+  float readHeatIndex(bool isCelcius);
+
 
   float readAltitude(float seaLevel);
   float seaLevelForAltitude(float altitude, float pressure);
