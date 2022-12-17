@@ -231,7 +231,6 @@ public:
   float readHumidity(void);
   float readHeatIndex(bool isCelcius);
 
-
   float readAltitude(float seaLevel);
   float seaLevelForAltitude(float altitude, float pressure);
   uint32_t sensorID(void);

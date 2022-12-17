@@ -449,36 +449,34 @@ float Adafruit_BME280::readAltitude(float seaLevel) {
 
 /*!
  *   Computes Heat Index based on https://byjus.com/heat-index-formula/
- *
- *   @param isCelcius - if true return Heat Index in degrees celcius else return in Farenheit
+ *   @param isCelcius - if true return Heat Index in degrees celcius else return
+ * in Farenheit
  */
-float Adafruit_BME280::readHeatIndex(bool isCelcius){
+float Adafruit_BME280::readHeatIndex(bool isCelcius) {
   float tempF = readTemperature() * 1.8 + 32;
   float humidity = readHumidity();
   float hi = 0.5 * (tempF + 61.0 + ((tempF - 68.0) * 1.2) + (humidity * 0.094));
 
   if (hi > 79) {
     hi = -42.379 + 2.04901523 * tempF + 10.14333127 * humidity +
-         -0.22475541 * tempF * humidity +
-         -0.00683783 * pow(tempF, 2) +
+         -0.22475541 * tempF * humidity + -0.00683783 * pow(tempF, 2) +
          -0.05481717 * pow(humidity, 2) +
          0.00122874 * pow(tempF, 2) * humidity +
          0.00085282 * tempF * pow(humidity, 2) +
          -0.00000199 * pow(tempF, 2) * pow(humidity, 2);
 
-    if ((humidity < 13) && (tempF >= 80.0) &&
-        (tempF <= 112.0))
+    if ((humidity < 13) && (tempF >= 80.0) && (tempF <= 112.0))
       hi -= ((13.0 - humidity) * 0.25) *
             sqrt((17.0 - abs(tempF - 95.0)) * 0.05882);
 
-    else if ((humidity > 85.0) && (tempF >= 80.0) &&
-             (tempF <= 87.0))
+    else if ((humidity > 85.0) && (tempF >= 80.0) && (tempF <= 87.0))
       hi += ((humidity - 85.0) * 0.1) * ((87.0 - tempF) * 0.2);
-  }  
+  }
 
-  if(isCelcius) return (hi - 32) * 0.5556; //convert back to celcius
-  else return hi;
-
+  if (isCelcius)
+    return (hi - 32) * 0.5556; // convert back to celcius
+  else
+    return hi;
 }
 
 /*!
