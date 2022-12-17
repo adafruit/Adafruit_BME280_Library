@@ -451,6 +451,8 @@ float Adafruit_BME280::readAltitude(float seaLevel) {
  *   Computes Heat Index based on https://byjus.com/heat-index-formula/
  *   @param isCelcius - if true return Heat Index in degrees celcius else return
  * in Farenheit
+ *   @returns Heat Index in Celcius or Farenhite depending on parameter
+ * isCelcius
  */
 float Adafruit_BME280::readHeatIndex(bool isCelcius) {
   float tempF = readTemperature() * 1.8 + 32;
