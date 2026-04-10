@@ -232,7 +232,8 @@ public:
 
   float readAltitude(float seaLevel);
   float seaLevelForAltitude(float altitude, float pressure);
-  uint32_t sensorID(void);
+  uint32_t sensorID(void);   // return sensorID from init
+  uint32_t sensorConnected(void);   // Active check of sensor ID to check valid connection IWH 10/04/2026
 
   float getTemperatureCompensation(void);
   void setTemperatureCompensation(float);

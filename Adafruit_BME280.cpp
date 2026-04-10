@@ -469,6 +469,20 @@ float Adafruit_BME280::seaLevelForAltitude(float altitude, float atmospheric) {
 uint32_t Adafruit_BME280::sensorID(void) { return _sensorID; }
 
 /*!
+ *   Checks sensor ID to confirm connection to sensor. 
+ *   @returns Sensor ID 0x60 for BME280 or 0x00 on failure 
+ */
+uint32_t Adafruit_BME280::sensorConnected(void){
+	uint32_t sensor = read8(BME280_REGISTER_CHIPID);
+  if (sensor != 0x60){
+    return 0x00;
+  } else {
+	return sensor;
+  }
+}	
+	
+
+/*!
  *   Returns the current temperature compensation value in degrees Celsius
  *   @returns the current temperature compensation value in degrees Celsius
  */
