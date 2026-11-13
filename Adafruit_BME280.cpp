@@ -265,6 +265,27 @@ uint32_t Adafruit_BME280::read24(byte reg) {
 }
 
 /*!
+ *   @brief  Maximum measurement time for the current oversampling settings
+ *           (datasheet section 9.1): 1.25 + 2.3*T + (2.3*P + 0.575) +
+ *           (2.3*H + 0.575) ms, where a skipped channel contributes nothing.
+ *   @returns the maximum measurement time in milliseconds, rounded up
+ */
+uint32_t Adafruit_BME280::maxMeasurementTimeMs(void) {
+  // oversampling setting -> factor: 0 skipped, 1, 2, 4, 8, >=5 means 16
+  static const uint8_t factor[] = {0, 1, 2, 4, 8, 16, 16, 16};
+  uint32_t t = 125; // in units of 0.01 ms
+  uint8_t ot = factor[_measReg.osrs_t & 7];
+  uint8_t op = factor[_measReg.osrs_p & 7];
+  uint8_t oh = factor[_humReg.osrs_h & 7];
+  t += 230 * (uint32_t)ot;
+  if (op)
+    t += 230 * (uint32_t)op + 58;
+  if (oh)
+    t += 230 * (uint32_t)oh + 58;
+  return (t + 99) / 100;
+}
+
+/*!
  *  @brief  Take a new measurement (only possible in forced mode)
     @returns true in case of success else false
  */
@@ -280,6 +301,11 @@ bool Adafruit_BME280::takeForcedMeasurement(void) {
     write8(BME280_REGISTER_CONTROL, _measReg.get());
     // Store current time to measure the timeout
     uint32_t timeout_start = millis();
+    // The "measuring" status bit may not be set yet right after the mode
+    // write, in which case polling it alone would return before the
+    // conversion has even started and the caller would read stale data.
+    // Wait out the maximum conversion time first (DS 9.1), then poll.
+    delay(maxMeasurementTimeMs());
     // wait until measurement has been completed, otherwise we would read the
     // the values from the last measurement or the timeout occurred after 2 sec.
     while (read8(BME280_REGISTER_STATUS) & 0x08) {

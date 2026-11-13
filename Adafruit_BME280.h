@@ -254,6 +254,7 @@ protected:
   Adafruit_BME280_Humidity *humidity_sensor = NULL;
   //!< Adafruit_Sensor compat humidity sensor component
 
+  uint32_t maxMeasurementTimeMs(void);
   void readCoefficients(void);
   bool isReadingCalibration(void);
 
