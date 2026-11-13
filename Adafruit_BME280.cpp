@@ -105,8 +105,9 @@ bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
  */
 bool Adafruit_BME280::init() {
   // check if sensor, i.e. the chip ID is correct
+  _busError = false;
   _sensorID = read8(BME280_REGISTER_CHIPID);
-  if (_sensorID != 0x60)
+  if (_busError || _sensorID != 0x60)
     return false;
 
   // reset the device using soft-reset
@@ -116,11 +117,20 @@ bool Adafruit_BME280::init() {
   // wait for chip to wake up.
   delay(10);
 
-  // if chip is still reading calibration, delay
-  while (isReadingCalibration())
+  // if chip is still reading calibration, delay (bounded, and abort if the
+  // bus stops responding)
+  uint32_t cal_start = millis();
+  while (isReadingCalibration()) {
+    if (_busError || (millis() - cal_start) > 1000)
+      return false;
     delay(10);
+  }
+  if (_busError)
+    return false;
 
   readCoefficients(); // read trimming parameters, see DS 4.2.2
+  if (_busError)
+    return false;
 
   setSampling(); // use defaults
 
@@ -184,19 +194,37 @@ void Adafruit_BME280::write8(byte reg, byte value) {
 }
 
 /*!
+ *   @brief  Reads len bytes starting at reg over I2C or SPI
+ *   @param reg the first register address to read from
+ *   @param buf buffer receiving the data (zero filled on failure)
+ *   @param len number of bytes to read
+ *   @returns true on success; false (and sets _busError) otherwise
+ */
+bool Adafruit_BME280::readRegs(uint8_t reg, uint8_t *buf, size_t len) {
+  bool ok;
+  uint8_t cmd = reg;
+  if (i2c_dev) {
+    ok = i2c_dev->write_then_read(&cmd, 1, buf, len);
+  } else {
+    cmd = reg | 0x80;
+    ok = spi_dev->write_then_read(&cmd, 1, buf, len);
+  }
+  if (!ok) {
+    memset(buf, 0, len);
+    _busError = true;
+  }
+  return ok;
+}
+
+/*!
  *   @brief  Reads an 8 bit value over I2C or SPI
  *   @param reg the register address to read from
- *   @returns the data byte read from the device
+ *   @returns the data byte read from the device (0 and _busError set on
+ *            failure)
  */
 uint8_t Adafruit_BME280::read8(byte reg) {
   uint8_t buffer[1];
-  if (i2c_dev) {
-    buffer[0] = uint8_t(reg);
-    i2c_dev->write_then_read(buffer, 1, buffer, 1);
-  } else {
-    buffer[0] = uint8_t(reg | 0x80);
-    spi_dev->write_then_read(buffer, 1, buffer, 1);
-  }
+  readRegs(reg, buffer, 1);
   return buffer[0];
 }
 
@@ -207,14 +235,7 @@ uint8_t Adafruit_BME280::read8(byte reg) {
  */
 uint16_t Adafruit_BME280::read16(byte reg) {
   uint8_t buffer[2];
-
-  if (i2c_dev) {
-    buffer[0] = uint8_t(reg);
-    i2c_dev->write_then_read(buffer, 1, buffer, 2);
-  } else {
-    buffer[0] = uint8_t(reg | 0x80);
-    spi_dev->write_then_read(buffer, 1, buffer, 2);
-  }
+  readRegs(reg, buffer, 2);
   return uint16_t(buffer[0]) << 8 | uint16_t(buffer[1]);
 }
 
@@ -234,7 +255,6 @@ uint16_t Adafruit_BME280::read16_LE(byte reg) {
  *   @returns the 16 bit data value read from the device
  */
 int16_t Adafruit_BME280::readS16(byte reg) { return (int16_t)read16(reg); }
-
 /*!
  *   @brief  Reads a signed little endian 16 bit value over I2C or SPI
  *   @param reg the register address to read from
@@ -251,15 +271,7 @@ int16_t Adafruit_BME280::readS16_LE(byte reg) {
  */
 uint32_t Adafruit_BME280::read24(byte reg) {
   uint8_t buffer[3];
-
-  if (i2c_dev) {
-    buffer[0] = uint8_t(reg);
-    i2c_dev->write_then_read(buffer, 1, buffer, 3);
-  } else {
-    buffer[0] = uint8_t(reg | 0x80);
-    spi_dev->write_then_read(buffer, 1, buffer, 3);
-  }
-
+  readRegs(reg, buffer, 3);
   return uint32_t(buffer[0]) << 16 | uint32_t(buffer[1]) << 8 |
          uint32_t(buffer[2]);
 }
@@ -329,7 +341,7 @@ void Adafruit_BME280::readCoefficients(void) {
 bool Adafruit_BME280::isReadingCalibration(void) {
   uint8_t const rStatus = read8(BME280_REGISTER_STATUS);
 
-  return (rStatus & (1 << 0)) != 0;
+  return !_busError && (rStatus & (1 << 0)) != 0;
 }
 
 /*!
@@ -341,7 +353,10 @@ float Adafruit_BME280::readTemperature(void) {
   if (_measReg.osrs_t == sensor_sampling::SAMPLING_NONE)
     return NAN;
 
+  _busError = false;
   int32_t adc_T = read24(BME280_REGISTER_TEMPDATA);
+  if (_busError)
+    return NAN;
   adc_T >>= 4;
 
   var1 = (int32_t)((adc_T / 8) - ((int32_t)_bme280_calib.dig_T1 * 2));
@@ -366,8 +381,12 @@ float Adafruit_BME280::readPressure(void) {
     return NAN;
 
   readTemperature(); // must be done first to get t_fine
+  if (_busError)
+    return NAN;
 
   int32_t adc_P = read24(BME280_REGISTER_PRESSUREDATA);
+  if (_busError)
+    return NAN;
   adc_P >>= 4;
 
   var1 = ((int64_t)t_fine) - 128000;
@@ -405,8 +424,12 @@ float Adafruit_BME280::readHumidity(void) {
     return NAN;
 
   readTemperature(); // must be done first to get t_fine
+  if (_busError)
+    return NAN;
 
   int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
+  if (_busError)
+    return NAN;
   var1 = t_fine - ((int32_t)76800);
   var2 = (int32_t)(adc_H * 16384);
   var3 = (int32_t)(((int32_t)_bme280_calib.dig_H4) * 1048576);
