@@ -231,7 +231,7 @@ public:
   float readHumidity(void);
 
   float readAltitude(float seaLevel);
-  float seaLevelForAltitude(float altitude, float pressure);
+  float seaLevelForAltitude(float altitude, float atmospheric);
   uint32_t sensorID(void);
 
   float getTemperatureCompensation(void);
@@ -265,7 +265,6 @@ protected:
   uint16_t read16_LE(byte reg); // little endian
   int16_t readS16_LE(byte reg); // little endian
 
-  uint8_t _i2caddr;  //!< I2C addr for the TwoWire interface
   int32_t _sensorID; //!< ID of the BME Sensor
   int32_t t_fine; //!< temperature with high resolution, stored as an attribute
                   //!< as this is used for temperature compensation reading
