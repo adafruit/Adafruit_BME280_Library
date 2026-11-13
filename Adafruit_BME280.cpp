@@ -334,7 +334,8 @@ bool Adafruit_BME280::isReadingCalibration(void) {
 
 /*!
  *   @brief  Returns the temperature from the sensor
- *   @returns the temperature read from the device or NaN if sampling off
+ *   @returns the temperature read from the device or NaN if sampling off or
+ *            no valid conversion is available yet
  */
 float Adafruit_BME280::readTemperature(void) {
   int32_t var1, var2;
@@ -343,6 +344,10 @@ float Adafruit_BME280::readTemperature(void) {
 
   int32_t adc_T = read24(BME280_REGISTER_TEMPDATA);
   adc_T >>= 4;
+  // 0x80000 is the reset value: the channel was skipped or no conversion has
+  // completed yet (DS 5.4.8)
+  if (adc_T == 0x80000)
+    return NAN;
 
   var1 = (int32_t)((adc_T / 8) - ((int32_t)_bme280_calib.dig_T1 * 2));
   var1 = (var1 * ((int32_t)_bme280_calib.dig_T2)) / 2048;
@@ -358,17 +363,22 @@ float Adafruit_BME280::readTemperature(void) {
 
 /*!
  *   @brief  Returns the pressure from the sensor
- *   @returns the pressure value (in Pascal) or NaN if sampling off
+ *   @returns the pressure value (in Pascal) or NaN if sampling off or no
+ *            valid conversion is available yet
  */
 float Adafruit_BME280::readPressure(void) {
   int64_t var1, var2, var3, var4;
   if (_measReg.osrs_p == sensor_sampling::SAMPLING_NONE)
     return NAN;
 
-  readTemperature(); // must be done first to get t_fine
+  if (isnan(readTemperature())) // must be done first to get t_fine
+    return NAN;
 
   int32_t adc_P = read24(BME280_REGISTER_PRESSUREDATA);
   adc_P >>= 4;
+  // 0x80000 is the reset value: skipped or no conversion completed yet
+  if (adc_P == 0x80000)
+    return NAN;
 
   var1 = ((int64_t)t_fine) - 128000;
   var2 = var1 * var1 * (int64_t)_bme280_calib.dig_P6;
@@ -397,16 +407,21 @@ float Adafruit_BME280::readPressure(void) {
 
 /*!
  *  @brief  Returns the humidity from the sensor
- *  @returns the humidity value read from the device or NaN if sampling off
+ *  @returns the humidity value read from the device or NaN if sampling off or
+ *           no valid conversion is available yet
  */
 float Adafruit_BME280::readHumidity(void) {
   int32_t var1, var2, var3, var4, var5;
   if (_humReg.osrs_h == sensor_sampling::SAMPLING_NONE)
     return NAN;
 
-  readTemperature(); // must be done first to get t_fine
+  if (isnan(readTemperature())) // must be done first to get t_fine
+    return NAN;
 
   int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
+  // 0x8000 is the reset value: skipped or no conversion completed yet
+  if (adc_H == 0x8000)
+    return NAN;
   var1 = t_fine - ((int32_t)76800);
   var2 = (int32_t)(adc_H * 16384);
   var3 = (int32_t)(((int32_t)_bme280_calib.dig_H4) * 1048576);
