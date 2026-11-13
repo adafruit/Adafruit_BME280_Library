@@ -358,11 +358,15 @@ float Adafruit_BME280::readTemperature(void) {
 
 /*!
  *   @brief  Returns the pressure from the sensor
- *   @returns the pressure value (in Pascal) or NaN if sampling off
+ *   @returns the pressure value (in Pascal) or NaN if pressure or temperature
+ *            sampling is off
  */
 float Adafruit_BME280::readPressure(void) {
   int64_t var1, var2, var3, var4;
-  if (_measReg.osrs_p == sensor_sampling::SAMPLING_NONE)
+  // t_fine comes from the temperature measurement, so pressure is only valid
+  // if temperature sampling is enabled too
+  if (_measReg.osrs_p == sensor_sampling::SAMPLING_NONE ||
+      _measReg.osrs_t == sensor_sampling::SAMPLING_NONE)
     return NAN;
 
   readTemperature(); // must be done first to get t_fine
@@ -397,11 +401,15 @@ float Adafruit_BME280::readPressure(void) {
 
 /*!
  *  @brief  Returns the humidity from the sensor
- *  @returns the humidity value read from the device or NaN if sampling off
+ *  @returns the humidity value read from the device or NaN if humidity or
+ *           temperature sampling is off
  */
 float Adafruit_BME280::readHumidity(void) {
   int32_t var1, var2, var3, var4, var5;
-  if (_humReg.osrs_h == sensor_sampling::SAMPLING_NONE)
+  // t_fine comes from the temperature measurement, so humidity is only valid
+  // if temperature sampling is enabled too
+  if (_humReg.osrs_h == sensor_sampling::SAMPLING_NONE ||
+      _measReg.osrs_t == sensor_sampling::SAMPLING_NONE)
     return NAN;
 
   readTemperature(); // must be done first to get t_fine
