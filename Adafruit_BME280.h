@@ -218,6 +218,8 @@ public:
   bool begin(uint8_t addr = BME280_ADDRESS, TwoWire *theWire = &Wire);
   bool init();
 
+  // Defaults mean continuous 16x conversions, which self-heat the sensor; see
+  // the note on setSampling() in Adafruit_BME280.cpp.
   void setSampling(sensor_mode mode = MODE_NORMAL,
                    sensor_sampling tempSampling = SAMPLING_X16,
                    sensor_sampling pressSampling = SAMPLING_X16,

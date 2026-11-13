@@ -101,6 +101,13 @@ bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
 
 /*!
  *   @brief  Initialise sensor with given parameters / settings
+ *   @note   Applies the default setSampling() settings: normal mode, 16x
+ *           oversampling for temperature, pressure and humidity, filter off
+ *           and 0.5 ms standby. The sensor then converts continuously, which
+ *           warms the die and can bias temperature (and therefore humidity)
+ *           readings. For low-rate monitoring call setSampling() afterwards
+ *           with forced mode and 1x oversampling; see the "Weather Station
+ *           Scenario" in the advancedsettings example.
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::init() {
@@ -138,6 +145,14 @@ bool Adafruit_BME280::init() {
  *   @param humSampling the humidity sampling rate to use
  *   @param filter the filter mode to use
  *   @param duration the standby duration to use
+ *
+ *   @note   The defaults (normal mode, 16x oversampling on all channels,
+ *           filter off, 0.5 ms standby) make the sensor convert back to back.
+ *           The resulting self-heating can raise the measured temperature by
+ *           a noticeable amount and skew relative humidity. For readings taken
+ *           every few seconds or slower, prefer MODE_FORCED with SAMPLING_X1
+ *           (and call takeForcedMeasurement() before each read), or use a
+ *           longer standby duration in normal mode.
  */
 void Adafruit_BME280::setSampling(sensor_mode mode,
                                   sensor_sampling tempSampling,
