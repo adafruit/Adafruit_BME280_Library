@@ -257,6 +257,9 @@ protected:
   void readCoefficients(void);
   bool isReadingCalibration(void);
 
+  bool readRegs(uint8_t reg, uint8_t *buf, size_t len);
+  bool _busError = false; //!< set when a register read fails
+
   void write8(byte reg, byte value);
   uint8_t read8(byte reg);
   uint16_t read16(byte reg);
