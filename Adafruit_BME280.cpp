@@ -265,6 +265,44 @@ uint32_t Adafruit_BME280::read24(byte reg) {
 }
 
 /*!
+ *   @brief  Reads the raw pressure, temperature and humidity values in a
+ *           single burst (0xF7..0xFE). The datasheet (section 4) recommends
+ *           this so all three values come from the same conversion; separate
+ *           reads in normal mode can straddle a data update.
+ *   @param  adc_P receives the raw 20 bit pressure value
+ *   @param  adc_T receives the raw 20 bit temperature value
+ *   @param  adc_H receives the raw 16 bit humidity value
+ */
+void Adafruit_BME280::readRawData(int32_t *adc_P, int32_t *adc_T,
+                                  int32_t *adc_H) {
+  uint8_t b[8] = {0};
+  if (i2c_dev) {
+    b[0] = BME280_REGISTER_PRESSUREDATA;
+    i2c_dev->write_then_read(b, 1, b, sizeof(b));
+  } else {
+    b[0] = BME280_REGISTER_PRESSUREDATA | 0x80;
+    spi_dev->write_then_read(b, 1, b, sizeof(b));
+  }
+  *adc_P = ((uint32_t)b[0] << 12) | ((uint32_t)b[1] << 4) | (b[2] >> 4);
+  *adc_T = ((uint32_t)b[3] << 12) | ((uint32_t)b[4] << 4) | (b[5] >> 4);
+  *adc_H = ((uint32_t)b[6] << 8) | b[7];
+}
+
+/*!
+ *   @brief  Computes t_fine from a raw temperature value
+ *   @param  adc_T the raw 20 bit temperature value
+ */
+void Adafruit_BME280::calcTFine(int32_t adc_T) {
+  int32_t var1, var2;
+  var1 = (int32_t)((adc_T / 8) - ((int32_t)_bme280_calib.dig_T1 * 2));
+  var1 = (var1 * ((int32_t)_bme280_calib.dig_T2)) / 2048;
+  var2 = (int32_t)((adc_T / 16) - ((int32_t)_bme280_calib.dig_T1));
+  var2 = (((var2 * var2) / 4096) * ((int32_t)_bme280_calib.dig_T3)) / 16384;
+
+  t_fine = var1 + var2 + t_fine_adjust;
+}
+
+/*!
  *  @brief  Take a new measurement (only possible in forced mode)
     @returns true in case of success else false
  */
@@ -337,19 +375,12 @@ bool Adafruit_BME280::isReadingCalibration(void) {
  *   @returns the temperature read from the device or NaN if sampling off
  */
 float Adafruit_BME280::readTemperature(void) {
-  int32_t var1, var2;
   if (_measReg.osrs_t == sensor_sampling::SAMPLING_NONE)
     return NAN;
 
-  int32_t adc_T = read24(BME280_REGISTER_TEMPDATA);
-  adc_T >>= 4;
-
-  var1 = (int32_t)((adc_T / 8) - ((int32_t)_bme280_calib.dig_T1 * 2));
-  var1 = (var1 * ((int32_t)_bme280_calib.dig_T2)) / 2048;
-  var2 = (int32_t)((adc_T / 16) - ((int32_t)_bme280_calib.dig_T1));
-  var2 = (((var2 * var2) / 4096) * ((int32_t)_bme280_calib.dig_T3)) / 16384;
-
-  t_fine = var1 + var2 + t_fine_adjust;
+  int32_t adc_P, adc_T, adc_H;
+  readRawData(&adc_P, &adc_T, &adc_H);
+  calcTFine(adc_T);
 
   int32_t T = (t_fine * 5 + 128) / 256;
 
@@ -365,10 +396,10 @@ float Adafruit_BME280::readPressure(void) {
   if (_measReg.osrs_p == sensor_sampling::SAMPLING_NONE)
     return NAN;
 
-  readTemperature(); // must be done first to get t_fine
-
-  int32_t adc_P = read24(BME280_REGISTER_PRESSUREDATA);
-  adc_P >>= 4;
+  // burst read so t_fine and pressure come from the same conversion
+  int32_t adc_P, adc_T, adc_H;
+  readRawData(&adc_P, &adc_T, &adc_H);
+  calcTFine(adc_T);
 
   var1 = ((int64_t)t_fine) - 128000;
   var2 = var1 * var1 * (int64_t)_bme280_calib.dig_P6;
@@ -404,9 +435,11 @@ float Adafruit_BME280::readHumidity(void) {
   if (_humReg.osrs_h == sensor_sampling::SAMPLING_NONE)
     return NAN;
 
-  readTemperature(); // must be done first to get t_fine
+  // burst read so t_fine and humidity come from the same conversion
+  int32_t adc_P, adc_T, adc_H;
+  readRawData(&adc_P, &adc_T, &adc_H);
+  calcTFine(adc_T);
 
-  int32_t adc_H = read16(BME280_REGISTER_HUMIDDATA);
   var1 = t_fine - ((int32_t)76800);
   var2 = (int32_t)(adc_H * 16384);
   var3 = (int32_t)(((int32_t)_bme280_calib.dig_H4) * 1048576);

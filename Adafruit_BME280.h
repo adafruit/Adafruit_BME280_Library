@@ -257,6 +257,9 @@ protected:
   void readCoefficients(void);
   bool isReadingCalibration(void);
 
+  void readRawData(int32_t *adc_P, int32_t *adc_T, int32_t *adc_H);
+  void calcTFine(int32_t adc_T);
+
   void write8(byte reg, byte value);
   uint8_t read8(byte reg);
   uint16_t read16(byte reg);
