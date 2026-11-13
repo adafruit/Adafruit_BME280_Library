@@ -79,8 +79,10 @@ Adafruit_BME280::~Adafruit_BME280(void) {
 
 /*!
  *   @brief  Initialise sensor with given parameters / settings
- *   @param addr the I2C address the device can be found on
- *   @param theWire the I2C object to use, defaults to &Wire
+ *   @param addr the I2C address the device can be found on (ignored when
+ *          constructed for SPI)
+ *   @param theWire the I2C object to use, defaults to &Wire (ignored when
+ *          constructed for SPI)
  *   @returns true on success, false otherwise
  */
 bool Adafruit_BME280::begin(uint8_t addr, TwoWire *theWire) {
@@ -133,7 +135,7 @@ bool Adafruit_BME280::init() {
  *   @brief  setup sensor with given parameters / settings
  *
  *   @param mode the power mode to use for the sensor
- *   @param tempSampling the temp samping rate to use
+ *   @param tempSampling the temperature sampling rate to use
  *   @param pressSampling the pressure sampling rate to use
  *   @param humSampling the humidity sampling rate to use
  *   @param filter the filter mode to use
@@ -219,7 +221,7 @@ uint16_t Adafruit_BME280::read16(byte reg) {
 }
 
 /*!
- *   @brief  Reads a signed 16 bit little endian value over I2C or SPI
+ *   @brief  Reads an unsigned 16 bit little endian value over I2C or SPI
  *   @param reg the register address to read from
  *   @returns the 16 bit data value read from the device
  */
@@ -245,7 +247,7 @@ int16_t Adafruit_BME280::readS16_LE(byte reg) {
 }
 
 /*!
- *   @brief  Reads a 24 bit value over I2C
+ *   @brief  Reads a 24 bit value over I2C or SPI
  *   @param reg the register address to read from
  *   @returns the 24 bit data value read from the device
  */
@@ -427,10 +429,10 @@ float Adafruit_BME280::readHumidity(void) {
 }
 
 /*!
- *   Calculates the altitude (in meters) from the specified atmospheric
- *   pressure (in hPa), and sea-level pressure (in hPa).
+ *   Calculates the altitude (in meters) from the pressure currently measured
+ *   by the sensor and the given sea-level pressure (in hPa).
  *   @param  seaLevel      Sea-level pressure in hPa
- *   @returns the altitude value read from the device
+ *   @returns the calculated altitude in meters
  */
 float Adafruit_BME280::readAltitude(float seaLevel) {
   // Equation taken from BMP180 datasheet (page 16):
